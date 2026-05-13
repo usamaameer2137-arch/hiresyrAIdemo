@@ -1,0 +1,2960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>hiresyrAI — The Future of Autonomous Recruiting</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<style>
+  :root {
+    --brand: #1BAEF0;
+    --brand-dark: #0989C7;
+    --brand-darker: #056096;
+    --brand-soft: #E3F4FD;
+    --brand-softer: #F2FAFE;
+    --navy: #0A1F3F;
+    --navy-light: #132B55;
+    --navy-lighter: #1C3763;
+    --ink: #0F172A;
+    --ink-soft: #334155;
+    --muted: #64748B;
+    --muted-light: #94A3B8;
+    --border: #E2E8F0;
+    --border-strong: #CBD5E1;
+    --bg: #F7FAFC;
+    --bg-alt: #EEF4F9;
+    --card: #FFFFFF;
+    --success: #10B981;
+    --success-soft: #D1FAE5;
+    --warning: #F59E0B;
+    --warning-soft: #FEF3C7;
+    --danger: #EF4444;
+    --danger-soft: #FEE2E2;
+    --info: #3B82F6;
+    --info-soft: #DBEAFE;
+  }
+
+  * { -webkit-font-smoothing: antialiased; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 400;
+  }
+
+  .font-display { font-family: 'Nunito', sans-serif; font-weight: 800; letter-spacing: -0.02em; }
+  .font-brand   { font-family: 'Nunito', sans-serif; font-weight: 900; letter-spacing: -0.025em; }
+  .font-mono    { font-family: 'JetBrains Mono', monospace; }
+
+  /* Network node background pattern */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.22;
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%231BAEF0' stroke-width='0.6' opacity='0.35'%3E%3Cpath d='M50 100 L180 60 L320 140 L260 260 L100 230 Z'/%3E%3Cpath d='M500 50 L680 80 L720 200 L580 240 L520 150 Z'/%3E%3Cpath d='M100 500 L250 470 L310 600 L180 680 L60 600 Z'/%3E%3Cpath d='M550 460 L700 440 L760 580 L620 680 L500 580 Z'/%3E%3Cpath d='M180 60 L500 50 M320 140 L520 150 M260 260 L250 470 M180 680 L500 580 M720 200 L760 580'/%3E%3C/g%3E%3Cg fill='%231BAEF0' opacity='0.5'%3E%3Ccircle cx='50' cy='100' r='2.5'/%3E%3Ccircle cx='180' cy='60' r='2.5'/%3E%3Ccircle cx='320' cy='140' r='2.5'/%3E%3Ccircle cx='260' cy='260' r='2.5'/%3E%3Ccircle cx='100' cy='230' r='2.5'/%3E%3Ccircle cx='500' cy='50' r='2.5'/%3E%3Ccircle cx='680' cy='80' r='2.5'/%3E%3Ccircle cx='720' cy='200' r='2.5'/%3E%3Ccircle cx='580' cy='240' r='2.5'/%3E%3Ccircle cx='520' cy='150' r='2.5'/%3E%3Ccircle cx='100' cy='500' r='2.5'/%3E%3Ccircle cx='250' cy='470' r='2.5'/%3E%3Ccircle cx='310' cy='600' r='2.5'/%3E%3Ccircle cx='180' cy='680' r='2.5'/%3E%3Ccircle cx='60' cy='600' r='2.5'/%3E%3Ccircle cx='550' cy='460' r='2.5'/%3E%3Ccircle cx='700' cy='440' r='2.5'/%3E%3Ccircle cx='760' cy='580' r='2.5'/%3E%3Ccircle cx='620' cy='680' r='2.5'/%3E%3Ccircle cx='500' cy='580' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 900px 900px;
+    background-repeat: repeat;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px -24px rgba(10,31,63,.45);
+  }
+  .card-soft {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+
+  .btn-primary {
+    background: var(--brand);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: all .15s ease;
+    border: 1px solid var(--brand);
+    box-shadow: 0 1px 2px rgba(11,30,63,0.08), 0 0 0 1px rgba(27,174,240,0.12);
+  }
+  .btn-primary:hover { background: var(--brand-dark); border-color: var(--brand-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(27,174,240,0.25); }
+  .btn-dark {
+    background: var(--navy);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: all .15s ease;
+    border: 1px solid var(--navy);
+  }
+  .btn-dark:hover { background: var(--navy-light); transform: translateY(-1px); }
+  .btn-ghost {
+    background: var(--card);
+    color: var(--ink);
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 13px;
+    display: inline-flex; align-items: center; gap: 7px;
+    transition: all .15s ease;
+    border: 1px solid var(--border-strong);
+  }
+  .btn-ghost:hover { background: var(--bg-alt); border-color: var(--muted-light); }
+
+  /* Sidebar */
+  .sidebar {
+    background: var(--navy);
+    color: #CBD5E1;
+    background-image: radial-gradient(circle at top right, rgba(27,174,240,0.08) 0%, transparent 60%);
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #94A3B8;
+    cursor: pointer;
+    transition: all .15s ease;
+    position: relative;
+  }
+  .nav-item:hover { background: var(--navy-light); color: #F1F5F9; }
+  .nav-item.active {
+    background: var(--navy-lighter);
+    color: #FFFFFF;
+  }
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: -14px;
+    top: 50%; transform: translateY(-50%);
+    width: 3px; height: 20px;
+    background: var(--brand);
+    border-radius: 0 3px 3px 0;
+    box-shadow: 0 0 10px rgba(27,174,240,0.6);
+  }
+
+  /* Stat cards */
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all .2s ease;
+    box-shadow: 0 10px 30px -24px rgba(10,31,63,.45);
+  }
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, var(--brand-soft) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .stat-card:hover { border-color: var(--brand); transform: translateY(-2px); box-shadow: 0 12px 24px -8px rgba(27,174,240,0.18); }
+
+  /* Pipeline kanban */
+  .pipeline-col {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    min-width: 290px;
+    max-width: 290px;
+    display: flex; flex-direction: column;
+  }
+  .pipeline-col.drag-over {
+    background: var(--brand-soft);
+    border: 1.5px dashed var(--brand);
+  }
+  .cand-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    cursor: grab;
+    transition: all .15s ease;
+  }
+  .cand-card:hover {
+    border-color: var(--brand);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px -4px rgba(15,23,42,0.08), 0 0 0 1px rgba(27,174,240,0.15);
+  }
+  .cand-card:active, .cand-card.dragging { cursor: grabbing; opacity: 0.5; }
+
+  /* Score pill */
+  .score-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -0.02em;
+  }
+  .score-high   { background: var(--success-soft); color: #047857; }
+  .score-mid    { background: var(--warning-soft); color: #B45309; }
+  .score-low    { background: var(--danger-soft);  color: #B91C1C; }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .tag-brand { background: var(--brand-soft); color: var(--brand-darker); border-color: #B6E2F7; }
+  .tag-success { background: var(--success-soft); color: #047857; border-color: #A7F3D0; }
+
+  .page { display: none; }
+  .page.active { display: block; animation: fadein .3s ease; }
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted-light); }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(10,31,63,0.55);
+    backdrop-filter: blur(6px);
+    z-index: 50;
+    display: none;
+    align-items: center; justify-content: center;
+  }
+  .modal-backdrop.open { display: flex; animation: fadein .2s ease; }
+
+  /* Toast */
+  .toast {
+    background: var(--navy);
+    color: white;
+    padding: 14px 18px;
+    border-radius: 12px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px;
+    box-shadow: 0 20px 40px rgba(10,31,63,0.25);
+    animation: slidein .3s ease;
+    border: 1px solid var(--navy-light);
+    min-width: 280px;
+  }
+  @keyframes slidein { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+  /* Stepper */
+  .step-dot {
+    width: 30px; height: 30px;
+    border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    border: 1.5px solid var(--border-strong);
+    color: var(--muted);
+    background: var(--card);
+    transition: all .2s ease;
+  }
+  .step-dot.active { border-color: var(--brand); background: var(--brand); color: white; box-shadow: 0 0 0 4px var(--brand-soft); }
+  .step-dot.done   { border-color: var(--success); background: var(--success); color: white; }
+
+  /* Input */
+  .field-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; display: block; }
+  .field-input {
+    width: 100%;
+    padding: 11px 14px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--ink);
+    font-family: inherit;
+    transition: all .15s ease;
+  }
+  .field-input:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-soft); }
+
+  .source-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 999px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  /* Logo glow */
+  .logo-wrap {
+    position: relative;
+  }
+  .logo-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    background: radial-gradient(circle, rgba(27,174,240,0.4) 0%, transparent 70%);
+    z-index: -1;
+    filter: blur(8px);
+  }
+
+  /* Hero accent underline */
+  .accent-underline {
+    background-image: linear-gradient(transparent 75%, var(--brand-soft) 75%);
+    padding: 0 4px;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.15); }
+  }
+  .pulse-dot { animation: pulse-dot 2s infinite; }
+
+  /* Presentation polish: denser CRM surfaces and process-demo states */
+  .font-display, .font-brand, .font-mono { letter-spacing: 0; }
+  .card, .card-soft, .stat-card, .pipeline-col, .cand-card, .btn-primary, .btn-dark, .btn-ghost, .field-input, .toast {
+    border-radius: 8px !important;
+  }
+  .stat-card { padding: 18px 20px; }
+  .nav-item { border-radius: 8px; }
+  .nav-item .nav-badge {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 800;
+    color: white;
+    background: var(--brand);
+    padding: 2px 6px;
+    border-radius: 999px;
+  }
+  .sidebar-blue-box {
+    margin-top: 0;
+    padding: 0;
+  }
+  .sidebar-utilities {
+    padding-bottom: 0;
+  }
+  .utility-heading {
+    display: none;
+  }
+  .utility-link {
+    margin-top: 0;
+  }
+  .utility-link svg { color: currentColor; }
+  .utility-link:hover {
+    background: var(--navy-light);
+    color: white;
+  }
+  .utility-link.active {
+    background: var(--navy-lighter);
+    color: white;
+  }
+  .sidebar-status-card {
+    border-radius: 8px;
+    border: 1px solid rgba(27,174,240,.16);
+    background: rgba(27,174,240,.06);
+  }
+  .sidebar-agent-card {
+    margin-top: 14px;
+    padding: 9px 12px;
+  }
+  .sidebar-plan-card {
+    margin-top: 8px;
+    padding: 9px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(7,20,43,.55), rgba(27,174,240,.08));
+  }
+  .global-search-wrap { position: relative; }
+  .search-results {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    display: none;
+    z-index: 70;
+    padding: 6px;
+    max-height: 320px;
+    overflow: auto;
+    background: var(--card);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    box-shadow: 0 22px 50px rgba(15, 23, 42, .16);
+  }
+  .search-results.open { display: block; }
+  .search-result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 7px;
+    color: var(--text);
+    cursor: pointer;
+    transition: background .15s ease, transform .15s ease;
+  }
+  .search-result:hover {
+    background: var(--brand-soft);
+    transform: translateX(2px);
+  }
+  .search-result-title {
+    font-size: 13px;
+    font-weight: 800;
+  }
+  .search-result-meta {
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .search-result-badge {
+    flex-shrink: 0;
+    padding: 4px 7px;
+    border-radius: 999px;
+    background: var(--bg-alt);
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+  }
+  .system-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--ink-soft);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .process-layout {
+    display: block;
+  }
+  .process-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .process-lane {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(110px, 1fr));
+    gap: 0;
+    position: relative;
+    padding: 22px 18px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 18px 42px -34px rgba(10,31,63,.55);
+  }
+  .process-node {
+    background: transparent;
+    border: 0;
+    padding: 8px 8px 4px;
+    min-height: 0;
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+    z-index: 1;
+    transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  }
+  .process-node:hover,
+  .process-node.active {
+    border-color: transparent;
+    box-shadow: none;
+    transform: translateY(-1px);
+  }
+  .process-node::after {
+    content: '';
+    position: absolute;
+    left: calc(50% + 31px);
+    top: 38px;
+    width: calc(100% - 62px);
+    height: 2px;
+    background: var(--border-strong);
+    z-index: -1;
+  }
+  .process-node:last-child::after { display: none; }
+  .process-index {
+    position: static;
+    width: auto;
+    height: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    background: transparent;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    margin-bottom: 7px;
+  }
+  .process-node.active .process-index { background: transparent; color: var(--brand-dark); }
+  .process-icon {
+    width: 54px;
+    height: 54px;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: var(--brand-soft);
+    color: var(--brand-darker);
+    border: 1px solid #B6E2F7;
+    box-shadow: 0 8px 20px -16px rgba(10,31,63,.55);
+  }
+  .process-node.active .process-icon {
+    background: var(--brand);
+    color: white;
+    border-color: var(--brand);
+  }
+  .process-metric {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: var(--bg-alt);
+    color: var(--ink-soft);
+    border: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 800;
+  }
+  .process-screen {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--brand-dark);
+    font-weight: 800;
+    margin-top: 6px;
+  }
+  .process-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .process-detail-tile {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 10px 11px;
+    display: grid;
+    grid-template-columns: 34px minmax(0,1fr);
+    gap: 10px;
+    align-items: start;
+  }
+  .process-detail-mark {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--brand-dark);
+  }
+  .process-detail-panel {
+    margin-top: 14px;
+    padding: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 18px 42px -34px rgba(10,31,63,.55);
+  }
+  .process-proof-grid {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .process-proof {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+  .demo-panel {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 286px;
+    z-index: 80;
+    background: var(--navy);
+    color: white;
+    border: 1px solid rgba(255,255,255,.14);
+    box-shadow: 0 24px 70px rgba(10,31,63,.38);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .demo-panel .w-10 {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  #demo-step-title {
+    font-size: 16px;
+    line-height: 1.15;
+  }
+  #demo-step-copy {
+    display: none;
+  }
+  .demo-panel .btn-ghost,
+  .demo-panel .btn-primary {
+    padding: 6px 9px;
+    font-size: 11px;
+    border-radius: 7px !important;
+  }
+  .demo-progress {
+    height: 4px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(255,255,255,.12);
+  }
+  .demo-progress span {
+    display: block;
+    height: 100%;
+    background: var(--brand);
+    width: 0%;
+    transition: width .15s linear;
+  }
+  .demo-focus {
+    position: relative;
+    z-index: 20;
+    box-shadow: 0 0 0 4px rgba(27,174,240,.22), 0 18px 45px rgba(10,31,63,.18) !important;
+    border-color: var(--brand) !important;
+  }
+  .demo-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 11px;
+    border-radius: 999px;
+    background: rgba(27,174,240,.12);
+    color: var(--brand);
+    font-size: 12px;
+    font-weight: 800;
+    border: 1px solid rgba(27,174,240,.25);
+  }
+  @media (max-width: 1180px) {
+    .process-layout { grid-template-columns: 1fr; }
+    .process-lane { grid-template-columns: repeat(3, minmax(110px, 1fr)); row-gap: 18px; }
+    .process-node:nth-child(3n)::after { display: none; }
+    .process-detail-grid { grid-template-columns: 1fr; }
+    .demo-panel { width: calc(100vw - 32px); right: 16px; bottom: 16px; }
+  }
+</style>
+</head>
+<body class="relative">
+
+<div class="flex h-screen relative z-10">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar w-64 flex-shrink-0 flex flex-col py-6 px-5">
+    <!-- Brand -->
+    <div class="flex items-center gap-3 mb-6 px-1">
+      <div class="logo-wrap w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background:#061530;border:1px solid #1C3763">
+        <!-- Logo: H with nodes -->
+        <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <line x1="28" y1="22" x2="28" y2="78" stroke="#1BAEF0" stroke-width="5" stroke-linecap="round"/>
+          <line x1="72" y1="22" x2="72" y2="78" stroke="#1BAEF0" stroke-width="5" stroke-linecap="round"/>
+          <line x1="28" y1="50" x2="42" y2="50" stroke="#1BAEF0" stroke-width="4" stroke-linecap="round"/>
+          <line x1="58" y1="50" x2="72" y2="50" stroke="#1BAEF0" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="28" cy="22" r="5" fill="#1BAEF0"/>
+          <circle cx="28" cy="78" r="5" fill="#1BAEF0"/>
+          <circle cx="72" cy="22" r="5" fill="#1BAEF0"/>
+          <circle cx="72" cy="78" r="5" fill="#1BAEF0"/>
+          <circle cx="50" cy="50" r="10" fill="none" stroke="#1BAEF0" stroke-width="1.5" stroke-dasharray="2.2 2.2"/>
+          <path d="M 45 50 L 55 50 M 51 46 L 55 50 L 51 54" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="font-brand text-xl leading-none" style="color:var(--brand)">hiresyr<span style="color:white">AI</span></div>
+        <div class="text-[10px] uppercase tracking-widest mt-1" style="color:#64748B">Autonomous Recruiting</div>
+      </div>
+    </div>
+
+    <!-- Workspace switcher -->
+    <div class="mb-4 p-2.5 rounded-xl cursor-pointer transition" style="background:#0E2547;border:1px solid #1C3763">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style="background:linear-gradient(135deg,#1BAEF0,#0989C7)">AC</div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[10px] uppercase tracking-wider font-semibold" style="color:#64748B">Workspace</div>
+          <div class="text-sm text-white font-semibold truncate">Avih Consultings LLC</div>
+        </div>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:#64748B"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="flex flex-col gap-1 flex-1">
+      <div class="text-[10px] uppercase tracking-widest mb-2 px-3" style="color:#475569">Workspace</div>
+      <div class="nav-item active" data-page="dashboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item" data-page="jobs">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Jobs
+        <span class="ml-auto text-[10px] font-mono px-1.5 py-0.5 rounded-md" style="background:#1C3763;color:#CBD5E1">8</span>
+      </div>
+      <div class="nav-item" data-page="pipeline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="6" height="18"/><rect x="10" y="3" width="6" height="12"/><rect x="17" y="3" width="4" height="8"/></svg>
+        Pipeline
+      </div>
+      <div class="nav-item" data-page="process">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10"/><path d="M6.5 7.5 11 16"/><path d="m17.5 7.5-4.5 8.5"/></svg>
+        Process Map
+        <span class="nav-badge">NEW</span>
+      </div>
+      <div class="nav-item" data-page="candidates">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Candidates
+        <span class="ml-auto text-[10px] font-mono px-1.5 py-0.5 rounded-md" style="background:#1C3763;color:#CBD5E1">49</span>
+      </div>
+      <div class="nav-item" data-page="interviews">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        Interviews
+        <span class="ml-auto text-[10px] font-mono px-1.5 py-0.5 rounded-md" style="background:var(--brand);color:white">AI</span>
+      </div>
+      <div class="nav-item" data-page="analytics">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analytics
+      </div>
+
+      <div class="sidebar-blue-box">
+        <div class="sidebar-utilities">
+          <div class="utility-heading">Utilities</div>
+          <div class="utility-link nav-item" data-page="integrations">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Integrations
+          </div>
+          <div class="utility-link nav-item" data-page="settings">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+          </div>
+        </div>
+
+        <div class="sidebar-status-card sidebar-agent-card">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="pulse-dot w-1.5 h-1.5 rounded-full" style="background:var(--brand)"></span>
+            <span class="text-[11px] font-semibold" style="color:var(--brand)">AGENT ACTIVE</span>
+          </div>
+          <div class="text-[11px] leading-relaxed" style="color:#CBD5E1">Sourcing: LinkedIn + GitHub</div>
+        </div>
+
+        <div class="sidebar-status-card sidebar-plan-card">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style="background:var(--brand)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[11px] font-bold" style="color:var(--brand)">PRO PLAN</div>
+            <div class="text-[10px]" style="color:#94A3B8">Renews Nov 14 · 47 days</div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- User profile -->
+    <div class="mt-4 pt-4 border-t" style="border-color:#1C3763">
+      <div class="flex items-center gap-3 px-1 py-1 rounded-lg cursor-pointer transition" style="margin:-4px" onmouseover="this.style.background='#132B55'" onmouseout="this.style.background='transparent'" onclick="navTo('profile')">
+        <div class="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold" style="background:var(--brand);color:white">SZ</div>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm text-white truncate font-semibold">Sakha Zafar</div>
+          <div class="text-[11px] truncate" style="color:#64748B">Senior Recruiter · View profile</div>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:#64748B"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Top bar -->
+    <header class="px-10 py-5 flex items-center gap-6 border-b" style="border-color:var(--border);background:rgba(255,255,255,0.75);backdrop-filter:blur(6px)">
+      <div class="flex-1">
+        <div id="page-eyebrow" class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--muted)">Overview</div>
+        <h1 id="page-title" class="font-display text-3xl leading-tight" style="color:var(--navy)">Dashboard</h1>
+      </div>
+      <div class="global-search-wrap relative">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="global-search" type="text" placeholder="Search candidates, jobs, skills…" class="pl-9 pr-4 py-2.5 w-72 rounded-xl text-sm" style="background:var(--card);border:1px solid var(--border-strong)" onfocus="handleGlobalSearch(this.value)" oninput="handleGlobalSearch(this.value)" onkeydown="if(event.key==='Enter') openFirstSearchResult()">
+        <kbd class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-mono px-1.5 py-0.5 rounded" style="background:var(--bg-alt);border:1px solid var(--border);color:var(--muted)">⌘K</kbd>
+        <div id="search-results" class="search-results"></div>
+      </div>
+      <button class="relative p-2.5 rounded-xl" style="background:var(--card);border:1px solid var(--border-strong)" onclick="showToast('AI alerts: 14 new matches, 2 interviews due, 1 offer pending', '!')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full pulse-dot" style="background:var(--brand)"></span>
+      </button>
+      <button id="demo-mode-trigger" class="btn-ghost" onclick="startDemo()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/><path d="M19 12h2"/></svg>
+        Demo Mode
+      </button>
+      <button class="btn-primary" onclick="openModal()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Post a Job
+      </button>
+    </header>
+
+    <div class="flex-1 overflow-y-auto px-10 py-8">
+
+      <!-- ============ DASHBOARD PAGE ============ -->
+      <div id="page-dashboard" class="page active">
+        <div class="mb-8">
+          <p class="text-lg font-medium" style="color:var(--muted)">Good morning, Sakha —</p>
+          <h2 class="font-display text-4xl leading-tight mt-1" style="color:var(--navy)">
+            You have <span class="accent-underline" style="color:var(--brand-darker)">7 top matches</span> waiting review.
+          </h2>
+          <p class="mt-3 text-sm" style="color:var(--muted)">Avih Consultings is using hiresyrAI to automate hiring from search to shortlist — meeting only the top candidates.</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-4 gap-4 mb-8">
+          <div class="stat-card">
+            <div class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--muted)">Open Jobs</div>
+            <div class="flex items-baseline gap-2 mt-3">
+              <div class="font-display text-5xl" style="color:var(--navy)">8</div>
+              <div class="text-xs font-mono font-semibold" style="color:var(--success)">+3 this week</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--muted)">Active Candidates</div>
+            <div class="flex items-baseline gap-2 mt-3">
+              <div class="font-display text-5xl" style="color:var(--navy)">49</div>
+              <div class="text-xs font-mono font-semibold" style="color:var(--success)">+42</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--muted)">Avg. Match Score</div>
+            <div class="flex items-baseline gap-2 mt-3">
+              <div class="font-display text-5xl" style="color:var(--navy)">78<span class="text-2xl" style="color:var(--muted)">%</span></div>
+              <div class="text-xs font-mono font-semibold" style="color:var(--success)">+4%</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--muted)">Time to Hire</div>
+            <div class="flex items-baseline gap-2 mt-3">
+              <div class="font-display text-5xl" style="color:var(--navy)">18<span class="text-2xl" style="color:var(--muted)">d</span></div>
+              <div class="text-xs font-mono font-semibold" style="color:var(--success)">−2d</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row: Top matches + Activity -->
+        <div class="grid grid-cols-3 gap-6">
+          <div class="col-span-2 card p-6">
+            <div class="flex items-center justify-between mb-5">
+              <div>
+                <h3 class="font-display text-2xl" style="color:var(--navy)">Top matches this week</h3>
+                <p class="text-sm" style="color:var(--muted)">Ranked by AI fit score across all open roles</p>
+              </div>
+              <button class="btn-ghost" onclick="navTo('candidates')">View all →</button>
+            </div>
+            <div id="top-matches-list" class="space-y-2"></div>
+          </div>
+
+          <div class="card p-6">
+            <h3 class="font-display text-2xl mb-5" style="color:var(--navy)">Activity</h3>
+            <div class="space-y-4 text-sm">
+              <div class="flex gap-3">
+                <div class="w-2 h-2 rounded-full mt-1.5" style="background:var(--brand)"></div>
+                <div class="flex-1">
+                  <div><span class="font-semibold">Abdul Mannan</span> moved to Shortlisted</div>
+                  <div class="text-xs mt-0.5" style="color:var(--muted)">2 min ago · by you</div>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <div class="w-2 h-2 rounded-full mt-1.5" style="background:var(--success)"></div>
+                <div class="flex-1">
+                  <div>AI found <span class="font-semibold">14 new candidates</span> on LinkedIn</div>
+                  <div class="text-xs mt-0.5" style="color:var(--muted)">23 min ago · Sourcing Agent</div>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <div class="w-2 h-2 rounded-full mt-1.5" style="background:var(--info)"></div>
+                <div class="flex-1">
+                  <div><span class="font-semibold">Shopify Developer</span> posted to Indeed</div>
+                  <div class="text-xs mt-0.5" style="color:var(--muted)">1 hour ago</div>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <div class="w-2 h-2 rounded-full mt-1.5" style="background:var(--warning)"></div>
+                <div class="flex-1">
+                  <div>Match scores re-calculated for 42 candidates</div>
+                  <div class="text-xs mt-0.5" style="color:var(--muted)">3 hours ago · AI Matcher</div>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <div class="w-2 h-2 rounded-full mt-1.5" style="background:var(--muted)"></div>
+                <div class="flex-1">
+                  <div><span class="font-semibold">Talha Mahmood</span> signed offer letter</div>
+                  <div class="text-xs mt-0.5" style="color:var(--muted)">Yesterday</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ JOBS PAGE ============ -->
+      <div id="page-jobs" class="page">
+        <div class="flex items-center gap-3 mb-6">
+          <button class="btn-ghost" style="background:var(--navy);color:white;border-color:var(--navy)">All · 8</button>
+          <button class="btn-ghost">Published · 7</button>
+          <button class="btn-ghost">Draft · 1</button>
+          <div class="flex-1"></div>
+          <button class="btn-ghost" onclick="showToast('Jobs sorted by newest posting', '↓')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/></svg>
+            Sort: Newest
+          </button>
+        </div>
+        <div id="jobs-grid" class="grid grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- ============ PIPELINE PAGE ============ -->
+      <div id="page-pipeline" class="page">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="card px-4 py-2 flex items-center gap-3">
+            <span class="text-xs font-semibold" style="color:var(--muted)">JOB:</span>
+            <select id="pipeline-job-filter" class="text-sm bg-transparent outline-none font-semibold">
+              <option value="all">All jobs</option>
+            </select>
+          </div>
+          <div class="flex-1"></div>
+          <button class="btn-ghost" onclick="runAIMatch()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+            Re-run AI Match
+          </button>
+          <button class="btn-ghost" onclick="exportPipeline()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </button>
+        </div>
+        <div id="kanban" class="flex gap-4 overflow-x-auto pb-4" style="min-height:calc(100vh - 260px)"></div>
+      </div>
+
+      <!-- ============ PROCESS MAP PAGE ============ -->
+      <div id="page-process" class="page">
+        <div class="process-toolbar">
+          <span class="system-chip">
+            <span class="pulse-dot w-2 h-2 rounded-full" style="background:var(--success)"></span>
+            Simple hiring flow
+          </span>
+          <span class="system-chip">AI assists</span>
+          <span class="system-chip">Recruiter decides</span>
+          <div class="flex-1"></div>
+          <button class="btn-ghost" onclick="selectProcessStep(0)">Reset</button>
+          <button class="btn-primary" onclick="startDemo(1)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Walk through
+          </button>
+        </div>
+
+        <div class="process-layout">
+          <section>
+            <div class="mb-4">
+              <div class="text-[11px] uppercase tracking-widest font-bold" style="color:var(--brand-dark)">How hiresyrAI actually works</div>
+              <h2 class="font-display text-3xl mt-1" style="color:var(--navy)">One clear path from job brief to hire</h2>
+            </div>
+
+            <div id="process-lane" class="process-lane" data-demo-target="process-map"></div>
+
+            <div class="process-proof-grid" data-demo-target="guardrails">
+              <div class="process-proof">Score by evidence</div>
+              <div class="process-proof">Human approval before action</div>
+              <div class="process-proof">Decision trail saved</div>
+            </div>
+
+            <div id="process-detail" class="process-detail-panel"></div>
+          </section>
+        </div>
+      </div>
+
+      <!-- ============ CANDIDATES PAGE ============ -->
+      <div id="page-candidates" class="page">
+        <div id="candidate-list-view">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="card px-4 py-2 text-sm"><span class="font-semibold" id="cand-count">49</span> candidates</div>
+            <div class="card px-4 py-2 text-sm">All sources</div>
+            <div class="card px-4 py-2 text-sm">All stages</div>
+          </div>
+          <div class="card overflow-hidden">
+            <table class="w-full">
+              <thead>
+                <tr style="background:var(--bg-alt);border-bottom:1px solid var(--border)">
+                  <th class="text-left text-[11px] uppercase tracking-widest font-semibold px-5 py-3" style="color:var(--muted)">Candidate</th>
+                  <th class="text-left text-[11px] uppercase tracking-widest font-semibold px-5 py-3" style="color:var(--muted)">Role</th>
+                  <th class="text-left text-[11px] uppercase tracking-widest font-semibold px-5 py-3" style="color:var(--muted)">Stage</th>
+                  <th class="text-left text-[11px] uppercase tracking-widest font-semibold px-5 py-3" style="color:var(--muted)">Source</th>
+                  <th class="text-right text-[11px] uppercase tracking-widest font-semibold px-5 py-3" style="color:var(--muted)">Match</th>
+                </tr>
+              </thead>
+              <tbody id="candidates-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="candidate-detail-view" style="display:none">
+          <button onclick="closeCandidateDetail()" class="btn-ghost mb-5">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            Back to list
+          </button>
+          <div id="candidate-detail-body"></div>
+        </div>
+      </div>
+
+      <!-- ============ ANALYTICS PAGE ============ -->
+      <div id="page-analytics" class="page">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="card px-4 py-2 text-sm font-medium">Last 30 days</div>
+          <div class="card px-4 py-2 text-sm font-medium">All jobs</div>
+          <div class="card px-4 py-2 text-sm font-medium">All sources</div>
+        </div>
+
+        <div class="card p-6 mb-6">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h3 class="font-display text-2xl" style="color:var(--navy)">Hiring funnel</h3>
+              <p class="text-sm" style="color:var(--muted)">How candidates progress through your pipeline</p>
+            </div>
+            <div class="text-right">
+              <div class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--muted)">Conversion</div>
+              <div class="font-display text-3xl" style="color:var(--navy)">2.8<span style="color:var(--muted)">%</span></div>
+            </div>
+          </div>
+          <div id="funnel-bars" class="space-y-3"></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6 mb-6">
+          <div class="card p-6">
+            <h3 class="font-display text-2xl mb-1" style="color:var(--navy)">Source effectiveness</h3>
+            <p class="text-sm mb-5" style="color:var(--muted)">Where your best candidates come from</p>
+            <div style="height:260px"><canvas id="sourceChart"></canvas></div>
+          </div>
+          <div class="card p-6">
+            <h3 class="font-display text-2xl mb-1" style="color:var(--navy)">Match score distribution</h3>
+            <p class="text-sm mb-5" style="color:var(--muted)">AI fit scores across all candidates</p>
+            <div style="height:260px"><canvas id="scoreChart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <h3 class="font-display text-2xl mb-1" style="color:var(--navy)">Time to hire trend</h3>
+          <p class="text-sm mb-5" style="color:var(--muted)">Average days from job creation to hire</p>
+          <div style="height:240px"><canvas id="timeChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- ============ INTEGRATIONS PAGE ============ -->
+      <div id="page-integrations" class="page">
+        <div class="mb-6">
+          <p class="text-sm" style="color:var(--muted)">Connect hiresyrAI to the tools you already use.</p>
+        </div>
+        <div class="grid grid-cols-3 gap-4" id="integrations-grid"></div>
+      </div>
+
+      <!-- ============ INTERVIEWS PAGE ============ -->
+      <div id="page-interviews" class="page">
+        <!-- Stats row -->
+        <div class="grid grid-cols-4 gap-4 mb-6">
+          <div class="stat-card">
+            <div class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--muted)">Scheduled</div>
+            <div class="font-display text-4xl mt-2" style="color:var(--navy)">7</div>
+          </div>
+          <div class="stat-card">
+            <div class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--muted)">Completed (30d)</div>
+            <div class="font-display text-4xl mt-2" style="color:var(--navy)">23</div>
+          </div>
+          <div class="stat-card">
+            <div class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--muted)">Avg AI Score</div>
+            <div class="font-display text-4xl mt-2" style="color:var(--navy)">81<span class="text-2xl" style="color:var(--muted)">%</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--muted)">Recommended hire</div>
+            <div class="font-display text-4xl mt-2" style="color:var(--navy)">12</div>
+          </div>
+        </div>
+
+        <!-- Interview list view -->
+        <div id="interview-list-view">
+          <div class="flex items-center gap-3 mb-5">
+            <button class="btn-ghost" style="background:var(--navy);color:white;border-color:var(--navy)">All · 30</button>
+            <button class="btn-ghost">Completed · 23</button>
+            <button class="btn-ghost">Scheduled · 7</button>
+            <div class="flex-1"></div>
+            <button class="btn-primary" onclick="scheduleInterviewDemo()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Schedule Interview
+            </button>
+          </div>
+          <div id="interviews-list" class="space-y-3"></div>
+        </div>
+
+        <!-- Interview detail view -->
+        <div id="interview-detail-view" style="display:none">
+          <button onclick="closeInterviewDetail()" class="btn-ghost mb-5">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            Back to interviews
+          </button>
+          <div id="interview-detail-body"></div>
+        </div>
+      </div>
+
+      <!-- ============ PROFILE (My Performance) PAGE ============ -->
+      <div id="page-profile" class="page">
+        <!-- Header card -->
+        <div class="card p-8 mb-6 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-96 h-96" style="background:radial-gradient(circle, var(--brand-soft) 0%, transparent 70%);pointer-events:none"></div>
+          <div class="flex items-start gap-6 relative">
+            <div class="w-24 h-24 rounded-2xl flex items-center justify-center text-white text-3xl font-bold flex-shrink-0" style="background:linear-gradient(135deg,var(--brand),var(--brand-darker))">SZ</div>
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <h2 class="font-display text-4xl leading-tight" style="color:var(--navy)">Sakha Zafar</h2>
+                <span class="tag tag-brand">PRO PLAN</span>
+              </div>
+              <p class="text-base mt-1" style="color:var(--muted)">Senior Recruiter · Avih Consultings LLC</p>
+              <div class="flex items-center gap-5 mt-3 text-sm" style="color:var(--muted)">
+                <span>📧 sakha.zafar@avihconsultings.com</span>
+                <span>📍 Lahore, Pakistan</span>
+                <span>⏱️ Joined Aug 2024</span>
+              </div>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="tag tag-brand">Tech Recruiting</span>
+                <span class="tag tag-brand">Engineering Leadership</span>
+                <span class="tag tag-brand">Talent Sourcing</span>
+                <span class="tag tag-brand">Pakistani Market</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-[11px] uppercase tracking-widest font-semibold mb-1" style="color:var(--muted)">Performance</div>
+              <div class="font-display text-6xl leading-none" style="color:var(--success)">A+</div>
+              <div class="text-[11px] mt-1 font-semibold" style="color:var(--success)">Top 5% on team</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Personal stats -->
+        <div class="grid grid-cols-3 gap-4 mb-6">
+          <div class="stat-card">
+            <div class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--muted)">Jobs Managed</div>
+            <div class="flex items-baseline gap-2 mt-2">
+              <div class="font-display text-4xl" style="color:var(--navy)">8</div>
+              <div class="text-xs font-mono font-semibold" style="color:var(--success)">+2</div>
+            </div>
+            <div class="text-xs mt-1" style="color:var(--muted)">vs last month</div>
+          </div>
+          <div class="stat-card">
+            <div class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--muted)">Candidates Reviewed</div>
+            <div class="flex items-baseline gap-2 mt-2">
+              <div class="font-display text-4xl" style="color:var(--navy)">142</div>
+              <div class="text-xs font-mono font-semibold" style="color:var(--success)">+38</div>
+            </div>
+            <div class="text-xs mt-1" style="color:var(--muted)">in 30 days</div>
+          </div>
+          <div class="stat-card">
+            <div class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--muted)">Hires Made</div>
+            <div class="flex items-baseline gap-2 mt-2">
+              <div class="font-display text-4xl" style="color:var(--navy)">12</div>
+              <div class="text-xs font-mono font-semibold" style="color:var(--success)">+4</div>
+            </div>
+            <div class="text-xs mt-1" style="color:var(--muted)">this quarter</div>
+          </div>
+        </div>
+
+        <!-- Performance chart + KPIs -->
+        <div class="grid grid-cols-3 gap-6 mb-6">
+          <div class="col-span-2 card p-6">
+            <div class="flex items-center justify-between mb-5">
+              <div>
+                <h3 class="font-display text-2xl" style="color:var(--navy)">Hires per month</h3>
+                <p class="text-sm" style="color:var(--muted)">Your hiring output over the last 6 months</p>
+              </div>
+              <span class="tag tag-success">Above team avg</span>
+            </div>
+            <div style="height:240px"><canvas id="profileChart"></canvas></div>
+          </div>
+
+          <div class="card p-6">
+            <h3 class="font-display text-xl mb-4" style="color:var(--navy)">Key metrics</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between items-baseline mb-1">
+                  <span class="text-sm">Time-to-hire</span>
+                  <span class="text-sm font-mono font-semibold">16 days</span>
+                </div>
+                <div class="h-2 rounded-full" style="background:var(--bg-alt)">
+                  <div class="h-2 rounded-full" style="background:var(--brand);width:78%"></div>
+                </div>
+                <div class="text-[11px] mt-1" style="color:var(--success)">2 days faster than team avg</div>
+              </div>
+              <div>
+                <div class="flex justify-between items-baseline mb-1">
+                  <span class="text-sm">Funnel conversion</span>
+                  <span class="text-sm font-mono font-semibold">3.4%</span>
+                </div>
+                <div class="h-2 rounded-full" style="background:var(--bg-alt)">
+                  <div class="h-2 rounded-full" style="background:var(--brand);width:68%"></div>
+                </div>
+                <div class="text-[11px] mt-1" style="color:var(--success)">+0.6% above team avg</div>
+              </div>
+              <div>
+                <div class="flex justify-between items-baseline mb-1">
+                  <span class="text-sm">Offer acceptance</span>
+                  <span class="text-sm font-mono font-semibold">92%</span>
+                </div>
+                <div class="h-2 rounded-full" style="background:var(--bg-alt)">
+                  <div class="h-2 rounded-full" style="background:var(--success);width:92%"></div>
+                </div>
+                <div class="text-[11px] mt-1" style="color:var(--success)">Excellent</div>
+              </div>
+              <div>
+                <div class="flex justify-between items-baseline mb-1">
+                  <span class="text-sm">Quality of hire (90d)</span>
+                  <span class="text-sm font-mono font-semibold">4.6/5</span>
+                </div>
+                <div class="h-2 rounded-full" style="background:var(--bg-alt)">
+                  <div class="h-2 rounded-full" style="background:var(--success);width:92%"></div>
+                </div>
+                <div class="text-[11px] mt-1" style="color:var(--success)">Top 5% on team</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent activity + AI insight -->
+        <div class="grid grid-cols-3 gap-6">
+          <div class="col-span-2 card p-6">
+            <h3 class="font-display text-2xl mb-5" style="color:var(--navy)">Recent activity</h3>
+            <div class="space-y-4 text-sm">
+              <div class="flex gap-4 pb-4 border-b" style="border-color:var(--border)">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:var(--success-soft);color:var(--success)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="flex-1">
+                  <div><span class="font-semibold">Hired Talha Mahmood</span> as Full Stack Developer</div>
+                  <div class="text-xs mt-0.5" style="color:var(--muted)">Yesterday · Closed in 14 days</div>
+                </div>
+              </div>
+              <div class="flex gap-4 pb-4 border-b" style="border-color:var(--border)">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:var(--brand-soft);color:var(--brand-dark)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                </div>
+                <div class="flex-1">
+                  <div>Conducted interview with <span class="font-semibold">Abdul Mannan</span></div>
+                  <div class="text-xs mt-0.5" style="color:var(--muted)">2 days ago · AI score: 88%</div>
+                </div>
+              </div>
+              <div class="flex gap-4 pb-4 border-b" style="border-color:var(--border)">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:var(--info-soft);color:var(--info)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                </div>
+                <div class="flex-1">
+                  <div>Posted <span class="font-semibold">Shopify Developer</span> role to LinkedIn & Indeed</div>
+                  <div class="text-xs mt-0.5" style="color:var(--muted)">3 days ago · 47 applications received</div>
+                </div>
+              </div>
+              <div class="flex gap-4 pb-4 border-b" style="border-color:var(--border)">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:var(--warning-soft);color:var(--warning)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <div class="flex-1">
+                  <div>Shortlisted <span class="font-semibold">5 candidates</span> for MERN Stack Developer</div>
+                  <div class="text-xs mt-0.5" style="color:var(--muted)">4 days ago</div>
+                </div>
+              </div>
+              <div class="flex gap-4">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:var(--brand-soft);color:var(--brand-dark)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+                </div>
+                <div class="flex-1">
+                  <div>AI sourced <span class="font-semibold">14 new candidates</span> from LinkedIn</div>
+                  <div class="text-xs mt-0.5" style="color:var(--muted)">5 days ago · Sourcing Agent</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card p-6" style="background:linear-gradient(180deg, var(--brand-soft) 0%, var(--card) 50%)">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:var(--brand);color:white">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+              <div>
+                <div class="font-display text-lg leading-tight" style="color:var(--navy)">AI Coach insight</div>
+                <div class="text-[11px]" style="color:var(--muted)">Personalized for you</div>
+              </div>
+            </div>
+            <p class="text-sm leading-relaxed mb-4">
+              You're <strong>excelling at engineering roles</strong> — your hires in Full Stack and MERN have a 96% retention rate after 90 days.
+            </p>
+            <p class="text-sm leading-relaxed mb-4">
+              Consider expanding into <strong>Shopify and WordPress</strong> roles where Avih has 23 open positions and only 1 active recruiter.
+            </p>
+            <div class="mt-4 pt-4 border-t" style="border-color:var(--border)">
+              <div class="text-[11px] uppercase tracking-widest font-bold mb-2" style="color:var(--brand-dark)">Top strengths</div>
+              <div class="flex flex-wrap gap-2">
+                <span class="tag tag-success">Quick decisions</span>
+                <span class="tag tag-success">High-quality shortlists</span>
+                <span class="tag tag-success">Tech screening</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SETTINGS PAGE ============ -->
+      <div id="page-settings" class="page">
+        <div class="card p-12 text-center">
+          <div class="font-display text-3xl mb-2" style="color:var(--navy)">Settings</div>
+          <p class="text-sm" style="color:var(--muted)">Pipeline stages, AI weights, team members & billing.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ============ POST JOB MODAL ============ -->
+<div id="modal" class="modal-backdrop">
+  <div class="card p-8" style="width:640px;max-width:92vw">
+    <div class="flex items-center gap-3 mb-8">
+      <div class="step-dot active" id="step-1">1</div>
+      <div class="flex-1 h-[1.5px]" style="background:var(--border)"></div>
+      <div class="step-dot" id="step-2">2</div>
+      <div class="flex-1 h-[1.5px]" style="background:var(--border)"></div>
+      <div class="step-dot" id="step-3">3</div>
+    </div>
+
+    <div id="form-step-1">
+      <h3 class="font-display text-3xl mb-1" style="color:var(--navy)">Post a new role</h3>
+      <p class="text-sm mb-6" style="color:var(--muted)">Start with the basics — you can always edit later.</p>
+      <div class="space-y-4">
+        <div>
+          <label class="field-label">Job title</label>
+          <input class="field-input" placeholder="e.g. Senior Backend Engineer" value="Senior Full-Stack Developer">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="field-label">Department</label>
+            <input class="field-input" value="Engineering">
+          </div>
+          <div>
+            <label class="field-label">Location</label>
+            <input class="field-input" value="Lahore · Hybrid">
+          </div>
+        </div>
+        <div>
+          <label class="field-label">Required skills</label>
+          <input class="field-input" value="React, Node.js, PostgreSQL, TypeScript">
+        </div>
+        <div>
+          <label class="field-label">Description</label>
+          <textarea class="field-input" rows="3">We're looking for a senior full-stack engineer to own features end-to-end and mentor the team...</textarea>
+        </div>
+      </div>
+    </div>
+
+    <div id="form-step-2" style="display:none">
+      <h3 class="font-display text-3xl mb-1" style="color:var(--navy)">Post to job boards</h3>
+      <p class="text-sm mb-6" style="color:var(--muted)">Select where you want this job to appear.</p>
+      <div class="space-y-3">
+        <label class="flex items-center gap-3 p-4 rounded-xl cursor-pointer" style="border:1.5px solid var(--brand);background:var(--brand-softer)">
+          <input type="checkbox" checked class="w-4 h-4">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white text-sm" style="background:#0A66C2">in</div>
+          <div class="flex-1">
+            <div class="font-semibold text-sm">LinkedIn</div>
+            <div class="text-xs" style="color:var(--muted)">Connected · 2.1M daily viewers</div>
+          </div>
+          <span class="tag tag-success">FREE</span>
+        </label>
+        <label class="flex items-center gap-3 p-4 rounded-xl cursor-pointer" style="border:1.5px solid var(--brand);background:var(--brand-softer)">
+          <input type="checkbox" checked class="w-4 h-4">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white text-xs" style="background:#003A9B">ind</div>
+          <div class="flex-1">
+            <div class="font-semibold text-sm">Indeed</div>
+            <div class="text-xs" style="color:var(--muted)">Connected · Global reach</div>
+          </div>
+          <span class="tag tag-success">FREE</span>
+        </label>
+        <label class="flex items-center gap-3 p-4 rounded-xl cursor-pointer" style="border:1.5px solid var(--border)">
+          <input type="checkbox" class="w-4 h-4">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white text-sm" style="background:#000">gh</div>
+          <div class="flex-1">
+            <div class="font-semibold text-sm">GitHub Jobs</div>
+            <div class="text-xs" style="color:var(--muted)">Developer-focused board</div>
+          </div>
+          <span class="tag tag-brand">$49</span>
+        </label>
+      </div>
+    </div>
+
+    <div id="form-step-3" style="display:none">
+      <h3 class="font-display text-3xl mb-1" style="color:var(--navy)">Configure pipeline</h3>
+      <p class="text-sm mb-6" style="color:var(--muted)">Candidates will move through these stages automatically.</p>
+      <div class="space-y-2">
+        <div class="flex items-center gap-3 p-3 rounded-xl" style="background:var(--bg-alt)">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold font-mono" style="background:var(--card);border:1px solid var(--border);color:var(--brand)">1</div>
+          <div class="flex-1 text-sm font-semibold">Sourced</div>
+          <span class="tag tag-brand">Auto</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-xl" style="background:var(--bg-alt)">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold font-mono" style="background:var(--card);border:1px solid var(--border);color:var(--brand)">2</div>
+          <div class="flex-1 text-sm font-semibold">Screening</div>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-xl" style="background:var(--bg-alt)">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold font-mono" style="background:var(--card);border:1px solid var(--border);color:var(--brand)">3</div>
+          <div class="flex-1 text-sm font-semibold">Shortlisted</div>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-xl" style="background:var(--bg-alt)">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold font-mono" style="background:var(--card);border:1px solid var(--border);color:var(--brand)">4</div>
+          <div class="flex-1 text-sm font-semibold">Offer</div>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-xl" style="background:var(--bg-alt)">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold font-mono" style="background:var(--card);border:1px solid var(--border);color:var(--brand)">5</div>
+          <div class="flex-1 text-sm font-semibold">Hired</div>
+        </div>
+      </div>
+      <div class="mt-4 p-3 rounded-xl text-xs font-medium" style="background:var(--brand-soft);color:var(--brand-darker);border:1px solid #B6E2F7">
+        ✨ AI will auto-score and rank candidates as soon as they enter your pipeline.
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 mt-8 pt-5" style="border-top:1px solid var(--border)">
+      <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+      <div class="flex-1"></div>
+      <button id="btn-back" class="btn-ghost" onclick="stepBack()" style="display:none">← Back</button>
+      <button id="btn-next" class="btn-primary" onclick="stepNext()">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<div id="toasts" class="fixed top-6 right-6 z-50 space-y-3"></div>
+
+<div id="demo-panel" class="demo-panel" style="display:none">
+  <div class="flex items-start gap-3">
+    <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(27,174,240,.18);color:var(--brand)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+    </div>
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center justify-between gap-3">
+        <div id="demo-step-kicker" class="text-[11px] uppercase tracking-widest font-bold" style="color:#9DD9F8">Demo step</div>
+        <button onclick="stopDemo()" class="text-xs font-bold" style="color:#CBD5E1">Close</button>
+      </div>
+      <div class="text-[10px] uppercase tracking-widest font-bold mt-1" style="color:#94A3B8">Auto-play: 30 seconds</div>
+      <h3 id="demo-step-title" class="font-display text-xl mt-1">Demo Mode</h3>
+      <p id="demo-step-copy" class="text-sm leading-relaxed mt-2" style="color:#CBD5E1"></p>
+      <div class="demo-progress mt-4"><span id="demo-progress-bar"></span></div>
+      <div class="flex items-center gap-2 mt-4">
+        <button class="btn-ghost" onclick="demoPrev()" style="background:#10294F;color:white;border-color:#25466F">Back</button>
+        <button id="demo-next-btn" class="btn-primary" onclick="demoNext()">Next</button>
+        <span id="demo-step-count" class="ml-auto text-xs font-mono" style="color:#94A3B8"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// =================================================================
+// JOBS (matching the Syberonics candidate sheet)
+// =================================================================
+const JOBS = [
+  { id:'j1', title:'Full Stack Developer',   dept:'Engineering',     location:'Lahore · On-site',      status:'Published', posted:'3 days ago',  boards:['LinkedIn','Indeed'] },
+  { id:'j2', title:'MERN Stack Developer',   dept:'Engineering',     location:'Remote · Pakistan',     status:'Published', posted:'5 days ago',  boards:['LinkedIn','Indeed','GitHub'] },
+  { id:'j3', title:'Shopify Developer',      dept:'E-commerce',      location:'Karachi · Hybrid',      status:'Published', posted:'1 week ago',  boards:['LinkedIn','Indeed'] },
+  { id:'j4', title:'WordPress Developer',    dept:'Engineering',     location:'Lahore · Remote',       status:'Published', posted:'4 days ago',  boards:['LinkedIn','Indeed'] },
+  { id:'j5', title:'Front-end Developer',    dept:'Engineering',     location:'Remote · Pakistan',     status:'Published', posted:'6 days ago',  boards:['LinkedIn','GitHub'] },
+  { id:'j6', title:'SEO Expert',             dept:'Marketing',       location:'Lahore · On-site',      status:'Published', posted:'2 weeks ago', boards:['LinkedIn','Indeed'] },
+  { id:'j7', title:'Digital Marketer',       dept:'Marketing',       location:'Remote · Pakistan',     status:'Published', posted:'1 week ago',  boards:['LinkedIn','Indeed'] },
+  { id:'j8', title:'DevOps Engineer',        dept:'Infrastructure',  location:'Lahore · Hybrid',       status:'Draft',     posted:'Draft',       boards:[] },
+];
+
+// =================================================================
+// CANDIDATES — 35 real from Syberonics sheet + 5 dummy
+// =================================================================
+const CANDIDATES = [
+  // ===== Full Stack Developer (from sheet) =====
+  { id:'c1', name:'Abdul Mannan',     role:'Full Stack Developer', jobId:'j1', score:92, stage:'shortlisted', source:'LinkedIn', location:'Lahore',     exp:'6 Years',  skills:['HTML','CSS','PHP','JavaScript','Laravel','WordPress'],                              email:'mananuol223@gmail.com',      phone:'0331-1043163', company:'Gigalabs',              github:'MR-AMDEV' },
+  { id:'c2', name:'Aqib Manzoor',     role:'Full Stack Developer', jobId:'j1', score:86, stage:'screening',   source:'LinkedIn', location:'Multan',     exp:'4 Years',  skills:['HTML','CSS','PHP','Vue.js','Laravel','MySQL','CodeIgniter'],                        email:'aqib5452@gmail.com',         phone:'0304-8669480', company:'Full-Duplex',           github:'AqibManzoor' },
+  { id:'c3', name:'Muhammad Zeeshan', role:'Full Stack Developer', jobId:'j1', score:84, stage:'screening',   source:'GitHub',   location:'Lahore',     exp:'5 Years',  skills:['HTML','CSS','MySQL','XML','Bootstrap','JavaScript','jQuery','OOP','LINQ'],          email:'mzeeshan2330@gmail.com',     phone:'0343-4672353', company:'DevHouse',              github:'M-ZeeshanDev' },
+  { id:'c4', name:'Saleem Ullah',     role:'Full Stack Developer', jobId:'j1', score:74, stage:'sourced',     source:'Indeed',   location:'Lahore',     exp:'3 Years',  skills:['HTML','CSS','PHP','JavaScript','Bootstrap','jQuery','C++','MySQL'],                 email:'saleemullah8818@gmail.com',  phone:'0320-8418213', company:'Freelancer',            github:'Saleem-18' },
+  { id:'c5', name:'Usman Akram',      role:'Full Stack Developer', jobId:'j1', score:89, stage:'shortlisted', source:'LinkedIn', location:'Lahore',     exp:'5 Years',  skills:['HTML','CSS','JavaScript','Node.js','Express','React','Redux','Bootstrap'],         email:'musmanakram09@gmail.com',    phone:'0311-0699799', company:'Earth Movers International', github:'Usmanakram9' },
+
+  // ===== MERN Stack Developer =====
+  { id:'c6', name:'Ahsan Ghafoor',    role:'MERN Stack Developer', jobId:'j2', score:72, stage:'sourced',     source:'GitHub',   location:'Lahore',     exp:'1 Year',   skills:['HTML5','CSS','JavaScript','React','Express','Node.js','Redux'],                    email:'ahsanghafoor2016@gmail.com', phone:'0348-6717118', company:'Softtik Technologies',  github:'ahsanghafoor' },
+  { id:'c7', name:'Aftab Farooq',     role:'MERN Stack Developer', jobId:'j2', score:83, stage:'screening',   source:'LinkedIn', location:'Faisalabad', exp:'3 Years',  skills:['HTML5','CSS3','JavaScript','Bootstrap','React','Node.js'],                          email:'aftabfarooq8@gmail.com',     phone:'0303-0060900', company:'Xlogic Solutions',      github:'MianAafi' },
+  { id:'c8', name:'Athar Laique',     role:'MERN Stack Developer', jobId:'j2', score:91, stage:'shortlisted', source:'LinkedIn', location:'Lahore',     exp:'3.5+ Years', skills:['HTML','CSS','Bootstrap','React','Vue.js','Redux','Node.js','Express','NestJS'],  email:'atharlaique15@gmail.com',    phone:'0312-1407636', company:'—',                     github:'atlaique' },
+  { id:'c9', name:'Abdul Rehman',     role:'MERN Stack Developer', jobId:'j2', score:69, stage:'sourced',     source:'LinkedIn', location:'Lahore',     exp:'1 Year',   skills:['MongoDB','Express','React','Node.js','MySQL','Postgres','Next.js'],                email:'abdulrehman8464@gmail.com',  phone:'0304-4158946', company:'IT Beasts',             github:'abduljsdev' },
+  { id:'c10',name:'Ajmal Khan',       role:'MERN Stack Developer', jobId:'j2', score:85, stage:'screening',   source:'GitHub',   location:'Lahore',     exp:'3 Years',  skills:['HTML5','CSS3','MongoDB','Express','React','Node.js','MySQL','Next.js'],             email:'ajmalkhan50500@gmail.com',   phone:'0308-0112817', company:'Coeus Solutions',       github:'50ajmalkhan' },
+
+  // ===== Shopify Developers =====
+  { id:'c11',name:'Sameer Fiaz',      role:'Shopify Developer',    jobId:'j3', score:88, stage:'shortlisted', source:'LinkedIn', location:'Karachi',    exp:'5+ Years', skills:['HTML','CSS','JavaScript','Python','PHP','WordPress','Bootstrap','jQuery','SQL','Shopify'], email:'sameerahmedpycs@gmail.com', phone:'0302-2651275', company:'—',                github:'sameerahmed3011' },
+  { id:'c12',name:'Muhammad Noman',   role:'Shopify Developer',    jobId:'j3', score:80, stage:'screening',   source:'Indeed',   location:'Lahore',     exp:'4+ Years', skills:['C++','Python','PHP','JavaScript','Vue.js','jQuery','MySQL','Oracle','Shopify'],     email:'noumi48@gmail.com',          phone:'0334-4851146', company:'Epinovus Pvt Ltd',      github:'noumi48' },
+  { id:'c13',name:'Mehwish Ilyas',    role:'Shopify Developer',    jobId:'j3', score:66, stage:'sourced',     source:'LinkedIn', location:'Karachi',    exp:'2 Years',  skills:['HTML','WordPress','CSS','Bootstrap','C#','JavaScript','PHP','jQuery','SQL','Shopify'], email:'Sharimehwish779@gmail.com', phone:'0315-3544364', company:'Mean3',                 github:null },
+  { id:'c14',name:'Syed Azeem Abbas', role:'Shopify Developer',    jobId:'j3', score:82, stage:'screening',   source:'LinkedIn', location:'Karachi',    exp:'4 Years',  skills:['HTML','CSS','JavaScript','jQuery','AJAX','Shopify','React'],                        email:'azeem.abbasnaqvi@gmail.com', phone:'0345-3677361', company:'Bularis Tech',          github:'SyedAzeemAbbas' },
+  { id:'c15',name:'Yasir Naeem',      role:'Shopify Developer',    jobId:'j3', score:90, stage:'shortlisted', source:'GitHub',   location:'Lahore',     exp:'5 Years',  skills:['HTML','CSS','JavaScript','Shopify','Node.js','Python','AWS','MySQL','Express'],     email:'itexperts786@gmail.com',     phone:'0346-7033972', company:'—',                     github:'YasirNaeem1122' },
+
+  // ===== WordPress Developers =====
+  { id:'c16',name:'Faizan Hamza',     role:'WordPress Developer',  jobId:'j4', score:79, stage:'screening',   source:'LinkedIn', location:'Sialkot',    exp:'3+ Years', skills:['HTML5','CSS3','Bootstrap','WordPress','JavaScript','React','Shopify'],             email:'faizijutt422@gmail.com',     phone:'0344-3555298', company:'Freelancer',            github:'FaizanHamzZa' },
+  { id:'c17',name:'Hamza Fiaz',       role:'WordPress Developer',  jobId:'j4', score:76, stage:'sourced',     source:'Indeed',   location:'Lahore',     exp:'3 Years',  skills:['HTML','CSS','Bootstrap','WordPress','JavaScript','jQuery','PHP','AJAX','SQL'],      email:'hamzamughal53506@gmail.com', phone:'0306-1546873', company:'MH Tech Solutions',     github:null },
+  { id:'c18',name:'Wajih-ur-Rehman',  role:'WordPress Developer',  jobId:'j4', score:64, stage:'sourced',     source:'LinkedIn', location:'Lahore',     exp:'2+ Years', skills:['WordPress','Web Development','GMB','On-page SEO','Web Analytics'],                 email:'Wajihbhatti732@gmail.com',   phone:'0317-4491336', company:'Quality Resource Group',github:null },
+  { id:'c19',name:'Ahsan Gillani',    role:'WordPress Developer',  jobId:'j4', score:71, stage:'screening',   source:'Indeed',   location:'Lahore',     exp:'2.5 Years',skills:['HTML','CSS','Bootstrap','WordPress','JavaScript','jQuery','PHP','OOP','MySQL'],     email:'ahsangillani781@gmail.com',  phone:'0348-5988120', company:'—',                     github:null },
+  { id:'c20',name:'Muhammad Umar Farooq', role:'WordPress Developer', jobId:'j4', score:87, stage:'shortlisted', source:'LinkedIn', location:'Lahore',  exp:'3 Years',  skills:['HTML','CSS','Bootstrap','WordPress','PHP','SAAS','MySQL','jQuery','AJAX','OOP','SDLC'], email:'umar826ch@gmail.com',    phone:'0305-9690826', company:'EvolversTech',          github:'umar195' },
+
+  // ===== Front-end Developers =====
+  { id:'c21',name:'Waleed Bin Tariq', role:'Front-end Developer',  jobId:'j5', score:81, stage:'screening',   source:'LinkedIn', location:'Faisalabad', exp:'4 Years',  skills:['C++','C#','CSS','HTML','JavaScript','XML','jQuery','Java','Python','AWS','MEAN'],   email:'waleedbintariq776@gmail.com',phone:'0315-7343776', company:'Qbatch',                github:null },
+  { id:'c22',name:'Syed Bilal Shah',  role:'Front-end Developer',  jobId:'j5', score:77, stage:'sourced',     source:'GitHub',   location:'Karachi',    exp:'4 Years',  skills:['HTML','CSS','PHP','Bootstrap','JavaScript','Themes','Plugins'],                     email:'thedeveloperbilal@gmail.com',phone:'0315-2908773', company:'Aimviz',                github:'TheDeveloperBilal' },
+  { id:'c23',name:'Muhammad Hamza Saleemi', role:'Front-end Developer', jobId:'j5', score:86, stage:'shortlisted', source:'LinkedIn', location:'Lahore', exp:'2+ Years', skills:['HTML5','CSS3','React','JavaScript','Bootstrap','Next.js'],                     email:'muhammadhamza0369@gmail.com',phone:'0302-4404690', company:'Ezwage Pvt Ltd',        github:'MuhammadHamzaSaleemi' },
+  { id:'c24',name:'Afzaal Nazir',     role:'Front-end Developer',  jobId:'j5', score:89, stage:'offer',       source:'LinkedIn', location:'Lahore',     exp:'3+ Years', skills:['HTML','CSS','JavaScript','AJAX','jQuery','React','Node.js','Next.js','Express','Bootstrap'], email:'afzaalnazir9@gmail.com', phone:'0301-4771586', company:'Webbugs',               github:'afzaalnazir9' },
+  { id:'c25',name:'Ali Husnain',      role:'Front-end Developer',  jobId:'j5', score:62, stage:'sourced',     source:'Indeed',   location:'Sahiwal',    exp:'1+ Year',  skills:['HTML','CSS','JavaScript','Bootstrap','Web Development'],                            email:'marketerconversion@gmail.com',phone:'0326-7323569',company:'—',                     github:null },
+
+  // ===== SEO Experts =====
+  { id:'c26',name:'Waqar Ahmed',      role:'SEO Expert',           jobId:'j6', score:75, stage:'screening',   source:'LinkedIn', location:'Lahore',     exp:'2 Years',  skills:['Off-page SEO','On-page SEO','Google Keyword Planner','Google Analytics','Strategic Planning'], email:'waqarnaimat20@gmail.com',phone:'0343-7296729',company:'Prgmd',           github:null },
+  { id:'c27',name:'Muhammad Shaban',  role:'SEO Expert',           jobId:'j6', score:84, stage:'shortlisted', source:'LinkedIn', location:'Lahore',     exp:'3+ Years', skills:['On-page SEO','Off-page SEO','Technical SEO','Local SEO','Keyword Research','Website Analysis'], email:'shabankml@gmail.com',phone:'0304-1068048',company:'NextBridge',        github:'shabancareer' },
+  { id:'c28',name:'Zulfqar Ali',      role:'SEO Expert',           jobId:'j6', score:70, stage:'sourced',     source:'LinkedIn', location:'Lahore',     exp:'2 Years',  skills:['SEO','WordPress','Social Media','Digital Marketing'],                              email:'zulfqarali2025@gmail.com',   phone:'0348-3179265', company:'Nextage Solutions',     github:'zulfijatoi' },
+  { id:'c29',name:'Amir Amin',        role:'SEO Expert',           jobId:'j6', score:87, stage:'shortlisted', source:'Indeed',   location:'Lahore',     exp:'4+ Years', skills:['HTML','SEO','Keyword Research','Branding','Google Analytics','SEMrush'],           email:'mohammadamiramin786@gmail.com',phone:'0308-9241060',company:'GerMedUSA IT',      github:null },
+  { id:'c30',name:'Hassan Naeem',     role:'SEO Expert',           jobId:'j6', score:93, stage:'offer',       source:'LinkedIn', location:'Lahore',     exp:'6+ Years', skills:['SEO','SEM','Digital Marketing','Strategic Planning','Content Marketing'],          email:'hassannaeem.seo@gmail.com',  phone:'0323-4611247', company:'Digital Hub',           github:null },
+
+  // ===== Digital Marketers =====
+  { id:'c31',name:'Shujaa Ali Bukhari', role:'Digital Marketer',   jobId:'j7', score:90, stage:'shortlisted', source:'LinkedIn', location:'Lahore',     exp:'7+ Years', skills:['Digital Marketing','SEO','SMS','Shopify','Keyword Planning','Branding','WordPress'], email:'shujae555@gmail.com',       phone:'0334-8184800', company:'Enablers',              github:null },
+  { id:'c32',name:'Taimoor Ali',      role:'Digital Marketer',     jobId:'j7', score:78, stage:'screening',   source:'LinkedIn', location:'Lahore',     exp:'3 Years',  skills:['SEO','Google Analytics','Email Marketing','PushOwl','Google Ads'],                 email:'Taimoor12.jutt@gmail.com',   phone:'0331-4040096', company:'Shopistan',             github:null },
+  { id:'c33',name:'Muhammad Usama Mansha', role:'Digital Marketer',jobId:'j7', score:74, stage:'sourced',     source:'Indeed',   location:'Faisalabad', exp:'3 Years',  skills:['Digital Marketing','SEO Optimization','Keyword Research'],                         email:'usamamansha05@gmail.com',    phone:'0317-6073577', company:'—',                     github:null },
+  { id:'c34',name:'Sehar Ali',        role:'Digital Marketer',     jobId:'j7', score:72, stage:'sourced',     source:'LinkedIn', location:'Lahore',     exp:'2+ Years', skills:['Google Ads','Services Marketing','Branding','Digital Marketing'],                 email:'seharali557@gmail.com',      phone:'0320-4716720', company:'Consult Tech Hub',      github:null },
+  { id:'c35',name:'Anas Ahmed',       role:'Digital Marketer',     jobId:'j7', score:80, stage:'screening',   source:'LinkedIn', location:'Okara',      exp:'3 Years',  skills:['Digital Marketing','SEO','WordPress','Social Media Marketing','Affiliate Marketing'], email:'anasahmad4400@gmail.com', phone:'0309-0884881', company:'Xihawks',               github:null },
+
+  // ===== Additional sourced candidates from premium Pakistani tech firms =====
+  { id:'d1', name:'Hira Aslam',     role:'Full Stack Developer', jobId:'j1', score:94, stage:'shortlisted', source:'LinkedIn', location:'Islamabad', exp:'8 Years',  skills:['React','Node.js','PostgreSQL','AWS','Docker','TypeScript'],            email:'hira.aslam@gmail.com',     phone:'0321-4567890', company:'Devsinc',         github:'hiraaslam' },
+  { id:'d2', name:'Bilal Khurram',  role:'MERN Stack Developer', jobId:'j2', score:88, stage:'screening',   source:'GitHub',   location:'Karachi',   exp:'7 Years',  skills:['MongoDB','Express','React','Node.js','Redis','GraphQL'],                email:'bilal.khurram@gmail.com',  phone:'0333-2233445', company:'Systems Limited', github:'bilalkdev' },
+  { id:'d3', name:'Mariam Sheikh',  role:'Front-end Developer',  jobId:'j5', score:83, stage:'sourced',     source:'LinkedIn', location:'Lahore',    exp:'6 Years',  skills:['React','TypeScript','Next.js','Tailwind','Figma'],                      email:'mariam.sheikh@gmail.com',  phone:'0301-9988776', company:'10Pearls',        github:'mariamsh' },
+  { id:'d4', name:'Talha Mahmood',  role:'Full Stack Developer', jobId:'j1', score:91, stage:'hired',       source:'LinkedIn', location:'Islamabad', exp:'10 Years', skills:['Python','Django','PostgreSQL','Kubernetes','AWS'],                      email:'talha.mahmood@gmail.com',  phone:'0345-1122334', company:'Afiniti',         github:'talhamh' },
+  { id:'d5', name:'Kamran Javed',   role:'MERN Stack Developer', jobId:'j2', score:79, stage:'sourced',     source:'GitHub',   location:'Lahore',    exp:'7 Years',  skills:['React','Node.js','Redis','PostgreSQL','Next.js'],                       email:'kamran.javed@gmail.com',   phone:'0312-5566778', company:'VentureDive',     github:'kamranj' },
+];
+
+const STAGES = [
+  { id:'sourced',     label:'Sourced',     desc:'Newly added' },
+  { id:'screening',   label:'Screening',   desc:'Tests sent' },
+  { id:'shortlisted', label:'Shortlisted', desc:'Top picks' },
+  { id:'interview',   label:'Interview',   desc:'In review' },
+  { id:'offer',       label:'Offer',       desc:'Offer sent' },
+  { id:'hired',       label:'Hired',       desc:'Signed' },
+];
+
+const INTEGRATIONS = [
+  { name:'LinkedIn',        icon:'in',  color:'#0A66C2', status:'connected',    desc:'Post jobs and source passive talent' },
+  { name:'Indeed',          icon:'id',  color:'#003A9B', status:'connected',    desc:'Global job board with webhook sync' },
+  { name:'GitHub',          icon:'gh',  color:'#0F172A', status:'connected',    desc:'Source engineers by their open-source work' },
+  { name:'Gmail',           icon:'@',   color:'#EA4335', status:'disconnected', desc:'Send candidate emails from your inbox' },
+  { name:'Slack',           icon:'#',   color:'#4A154B', status:'disconnected', desc:'Get notified when top matches arrive' },
+  { name:'Google Calendar', icon:'📅',  color:'#1A73E8', status:'coming',       desc:'Schedule interviews automatically' },
+  { name:'Zapier',          icon:'Z',   color:'#FF4A00', status:'disconnected', desc:'Connect to 5,000+ apps' },
+  { name:'WhatsApp',        icon:'W',   color:'#25D366', status:'disconnected', desc:'Message candidates directly' },
+  { name:'Rozee.pk',        icon:'R',   color:'#E91E63', status:'connected',    desc:'Pakistan\'s leading job board' },
+];
+
+const FUNNEL = [
+  { label:'Sourced',     count:287, pct:100  },
+  { label:'Screening',   count:142, pct:49.5 },
+  { label:'Shortlisted', count:54,  pct:18.8 },
+  { label:'Interview',   count:22,  pct:7.7  },
+  { label:'Offer',       count:11,  pct:3.8  },
+  { label:'Hired',       count:8,   pct:2.8  },
+];
+
+const PROCESS_STEPS = [
+  {
+    title:'Job brief',
+    icon:'briefcase',
+    owner:'Recruiter + hiring manager',
+    metric:'Intake',
+    signal:'AI turns requirements into a scorecard.',
+    input:'Role, skills, salary, location',
+    output:'Approved job scorecard',
+    proof:'Scorecard is locked before ranking.',
+    screen:'Jobs'
+  },
+  {
+    title:'Source',
+    icon:'radar',
+    owner:'Sourcing agent',
+    metric:'Find',
+    signal:'Agent searches job boards and public profiles.',
+    input:'Scorecard + sources',
+    output:'Candidate pool',
+    proof:'Weak and incomplete profiles stay visible.',
+    screen:'Candidates'
+  },
+  {
+    title:'Match',
+    icon:'spark',
+    owner:'AI matcher',
+    metric:'Rank',
+    signal:'AI scores skills, proof, gaps, and fit.',
+    input:'Profiles + evidence',
+    output:'Ranked matches',
+    proof:'Every score has a reason.',
+    screen:'Pipeline'
+  },
+  {
+    title:'Review',
+    icon:'userCheck',
+    owner:'Recruiter',
+    metric:'Approve',
+    signal:'Recruiter decides who moves forward.',
+    input:'AI rank + profile',
+    output:'Shortlist or reject',
+    proof:'Stage movement is logged.',
+    screen:'Pipeline'
+  },
+  {
+    title:'Interview',
+    icon:'video',
+    owner:'Interviewer',
+    metric:'Assess',
+    signal:'AI summarizes answers and rubric scores.',
+    input:'Transcript + notes',
+    output:'Interview packet',
+    proof:'Panel can disagree with AI.',
+    screen:'Interviews'
+  },
+  {
+    title:'Hire',
+    icon:'handshake',
+    owner:'Hiring team',
+    metric:'Close',
+    signal:'Team sends offer or keeps candidate warm.',
+    input:'All evidence',
+    output:'Offer or talent pool',
+    proof:'No automatic hiring decision.',
+    screen:'Candidates'
+  },
+];
+
+let activeProcessStep = 0;
+
+const SOURCE_COLORS = {
+  'LinkedIn': '#0A66C2',
+  'Indeed':   '#003A9B',
+  'GitHub':   '#0F172A',
+  'Direct':   '#1BAEF0',
+};
+
+// =================================================================
+// INTERVIEWS — AI-analyzed interview records
+// =================================================================
+const INTERVIEWS = [
+  {
+    id:'iv1', candidateId:'c1', date:'Apr 7, 2026 · 3:00 PM', duration:'58 min', status:'completed',
+    interviewer:'Sakha Zafar', round:'Technical round', recommendation:'strong_hire',
+    overall:88, technical:91, soft:84,
+    technical_breakdown:{ 'Coding ability':92, 'System design':88, 'Stack knowledge':94, 'Problem solving':90 },
+    soft_breakdown:{ 'Communication':86, 'Collaboration':82, 'Leadership':80, 'Culture fit':88 },
+    technical_notes:[
+      'Strong grasp of Laravel architecture — explained service containers and middleware fluently',
+      'Walked through a real WordPress + Laravel migration with clear trade-off reasoning',
+      'Solved the rate-limiter coding challenge in 12 minutes using Redis sliding window',
+      'Some hesitation on advanced PostgreSQL indexing strategies',
+    ],
+    soft_notes:[
+      'Confident communicator — structured answers using STAR format naturally',
+      'Showed humility when discussing past production incidents',
+      'Strong team player — credited Gigalabs colleagues throughout the conversation',
+      'Could improve on stakeholder pushback scenarios',
+    ],
+    summary:"Abdul demonstrates senior-level technical depth with 6 years of hands-on PHP/Laravel and full-stack delivery. Strongest on system architecture and pragmatic problem-solving. Soft skills are above average — would slot in well with the existing engineering team. Recommend moving to final round with the CTO.",
+  },
+  {
+    id:'iv2', candidateId:'c8', date:'Apr 6, 2026 · 11:00 AM', duration:'62 min', status:'completed',
+    interviewer:'Sakha Zafar', round:'Technical round', recommendation:'strong_hire',
+    overall:91, technical:94, soft:87,
+    technical_breakdown:{ 'Coding ability':96, 'System design':92, 'Stack knowledge':95, 'Problem solving':92 },
+    soft_breakdown:{ 'Communication':90, 'Collaboration':86, 'Leadership':82, 'Culture fit':90 },
+    technical_notes:[
+      'Exceptional MERN stack fluency — explained NestJS dependency injection from first principles',
+      'Built a full CRUD API with React frontend live in 35 minutes — clean code, proper error handling',
+      'Strong understanding of state management trade-offs (Redux vs Vuex vs Context API)',
+      'Confidently debugged a tricky React re-render issue without hints',
+    ],
+    soft_notes:[
+      'Excellent communicator — articulated complex technical concepts in simple terms',
+      'Asked thoughtful clarifying questions before jumping into solutions',
+      'Demonstrated growth mindset when discussing past mistakes',
+      'Natural mentor — talked about helping junior devs at his current role',
+    ],
+    summary:"Athar is one of the strongest MERN candidates we've interviewed this quarter. Technical execution was near-flawless and his soft skills suggest he'd grow into a tech lead within 12-18 months. Strong recommendation to move to offer stage.",
+  },
+  {
+    id:'iv3', candidateId:'c30', date:'Apr 5, 2026 · 2:00 PM', duration:'45 min', status:'completed',
+    interviewer:'Sakha Zafar', round:'Final round', recommendation:'strong_hire',
+    overall:93, technical:90, soft:96,
+    technical_breakdown:{ 'SEO strategy':94, 'Analytics':88, 'Tools mastery':92, 'Content marketing':86 },
+    soft_breakdown:{ 'Communication':98, 'Strategic thinking':96, 'Leadership':94, 'Culture fit':96 },
+    technical_notes:[
+      'Walked through a 6-figure organic traffic case study with detailed metrics',
+      'Deep knowledge of technical SEO — Core Web Vitals, schema markup, hreflang',
+      'Strong analytical mindset — uses GA4 + Search Console + Ahrefs in tandem',
+      'Could expand on emerging AI-driven SEO tools',
+    ],
+    soft_notes:[
+      'Outstanding executive presence — natural communicator at all levels',
+      'Demonstrated strategic thinking by reframing our SEO challenges',
+      'Asked sharp questions about company growth roadmap',
+      'Shows genuine passion for the craft — over 6 years deep specialization',
+    ],
+    summary:"Hassan is a standout SEO leader with the rare combination of deep technical expertise and exceptional communication. His strategic framing alone justifies the senior compensation. This is a hire we should not lose — recommend extending an offer this week.",
+  },
+  {
+    id:'iv4', candidateId:'c5', date:'Apr 4, 2026 · 4:30 PM', duration:'55 min', status:'completed',
+    interviewer:'Sakha Zafar', round:'Technical round', recommendation:'hire',
+    overall:84, technical:87, soft:81,
+    technical_breakdown:{ 'Coding ability':88, 'System design':82, 'Stack knowledge':92, 'Problem solving':86 },
+    soft_breakdown:{ 'Communication':80, 'Collaboration':84, 'Leadership':74, 'Culture fit':86 },
+    technical_notes:[
+      'Solid React + Redux fundamentals — explained reconciliation correctly',
+      'Comfortable with Node.js/Express backend patterns',
+      'Walked through debugging strategy for a memory leak scenario',
+      'Less depth on database optimization compared to top candidates',
+    ],
+    soft_notes:[
+      'Friendly and approachable — would integrate well with the team',
+      'Honest about gaps in his knowledge',
+      'Some answers lacked depth on leadership/mentorship experience',
+      'Strong cultural alignment with our values',
+    ],
+    summary:"Usman is a reliable mid-senior engineer with 5 years of solid full-stack experience. Not the strongest technically but his collaborative nature and culture fit make him a safe hire. Recommend moving forward.",
+  },
+  {
+    id:'iv5', candidateId:'c11', date:'Apr 3, 2026 · 10:00 AM', duration:'50 min', status:'completed',
+    interviewer:'Sakha Zafar', round:'Technical round', recommendation:'hire',
+    overall:86, technical:89, soft:83,
+    technical_breakdown:{ 'Shopify expertise':95, 'Liquid templating':92, 'JavaScript':84, 'API integration':86 },
+    soft_breakdown:{ 'Communication':84, 'Collaboration':82, 'Leadership':78, 'Culture fit':88 },
+    technical_notes:[
+      'Deep Shopify Plus knowledge — built 30+ themes from scratch',
+      'Demonstrated Liquid templating mastery on a live exercise',
+      'Strong understanding of Shopify\'s checkout extensibility',
+      'Less experience with headless commerce architectures',
+    ],
+    soft_notes:[
+      'Patient, detail-oriented communicator',
+      'Talked through past client conflicts with maturity',
+      'Strong work ethic — described his self-taught learning journey',
+      'Would benefit from more cross-team collaboration experience',
+    ],
+    summary:"Sameer brings 5+ years of pure Shopify expertise — exactly what we need for the e-commerce role. Technical skills are top-tier in his niche. Soft skills are good though slightly less polished than top engineering candidates. Recommend hire.",
+  },
+  {
+    id:'iv6', candidateId:'c24', date:'Apr 2, 2026 · 1:00 PM', duration:'48 min', status:'completed',
+    interviewer:'Sakha Zafar', round:'Final round', recommendation:'strong_hire',
+    overall:90, technical:88, soft:92,
+    technical_breakdown:{ 'React expertise':92, 'CSS/Layout':94, 'Performance':82, 'Tooling':86 },
+    soft_breakdown:{ 'Communication':94, 'Collaboration':92, 'Design sense':96, 'Culture fit':88 },
+    technical_notes:[
+      'Excellent React + Next.js depth — explained SSR vs ISR vs SSG correctly',
+      'Strong CSS/Tailwind skills — built a responsive dashboard live in 30 min',
+      'Good grasp of accessibility principles',
+      'Could deepen knowledge on performance profiling',
+    ],
+    soft_notes:[
+      'Outstanding design sensibility — went beyond pure code into UX thinking',
+      'Collaborative mindset — pair-programmed effectively during the exercise',
+      'Asked smart questions about design systems and component libraries',
+      'Genuine enthusiasm for the craft — would energize the team',
+    ],
+    summary:"Afzaal is the best front-end candidate we've seen this quarter. Technical execution is strong but his real superpower is his design sensibility — something most engineers lack. Already at offer stage. Recommend expediting before he accepts a competing offer.",
+  },
+  // Scheduled (not yet completed)
+  { id:'iv7', candidateId:'c2',  date:'Apr 9, 2026 · 11:00 AM', duration:'45 min', status:'scheduled', interviewer:'Sakha Zafar', round:'Technical round' },
+  { id:'iv8', candidateId:'c20', date:'Apr 9, 2026 · 3:00 PM',  duration:'45 min', status:'scheduled', interviewer:'Sakha Zafar', round:'Technical round' },
+  { id:'iv9', candidateId:'c27', date:'Apr 10, 2026 · 10:00 AM',duration:'45 min', status:'scheduled', interviewer:'Sakha Zafar', round:'Final round' },
+  { id:'iv10',candidateId:'c31', date:'Apr 10, 2026 · 2:00 PM', duration:'45 min', status:'scheduled', interviewer:'Sakha Zafar', round:'Technical round' },
+];
+
+// =================================================================
+// HELPERS
+// =================================================================
+function initials(name) { return name.split(' ').filter(Boolean).map(n => n[0]).slice(0,2).join('').toUpperCase(); }
+function scoreClass(s) { return s >= 85 ? 'score-high' : s >= 70 ? 'score-mid' : 'score-low'; }
+function avatarBg(name) {
+  const colors = ['#1BAEF0','#0989C7','#0A1F3F','#10B981','#F59E0B','#EF4444','#6366F1','#EC4899'];
+  let h = 0; for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
+  return colors[Math.abs(h) % colors.length];
+}
+function yearsOf(expStr) { const m = expStr.match(/(\d+(?:\.\d+)?)/); return m ? parseFloat(m[1]) : 0; }
+function stageLabel(id) { const s = STAGES.find(x=>x.id===id); return s ? s.label : id; }
+function jobTitle(id) { const j = JOBS.find(x=>x.id===id); return j ? j.title : ''; }
+
+// Auto-generate strengths + gaps from candidate data
+function strengthsFor(c) {
+  const out = []; const y = yearsOf(c.exp);
+  if (y >= 5) out.push(`${c.exp} of production experience — proven delivery at scale`);
+  else if (y >= 3) out.push(`${c.exp} with solid hands-on track record`);
+  else out.push(`Promising early-career profile (${c.exp})`);
+  if (c.skills.length >= 7) out.push(`Broad skill stack across ${c.skills.slice(0,3).join(', ')} and more`);
+  else out.push(`Focused expertise in ${c.skills.slice(0,3).join(', ')}`);
+  if (c.company && c.company !== '—') out.push(`Currently employed at ${c.company}`);
+  if (c.github) out.push(`Active GitHub portfolio (@${c.github})`);
+  else if (c.location) out.push(`Based in ${c.location} — local timezone fit`);
+  return out;
+}
+function gapsFor(c) {
+  const out = []; const y = yearsOf(c.exp);
+  if (y < 2) out.push('Junior level — may need more mentorship');
+  if (!c.github) out.push('No public GitHub activity found');
+  if (c.skills.length < 5) out.push('Narrower skill stack than ideal');
+  if (out.length === 0) out.push('Salary expectations not yet confirmed');
+  return out.slice(0, 3);
+}
+function whyBox(c) {
+  const y = yearsOf(c.exp);
+  const level = y >= 5 ? 'senior' : y >= 3 ? 'mid-level' : 'junior';
+  return `${c.name.split(' ')[0]} scored <strong>${c.score}%</strong> against the <em>${c.role}</em> role. The AI matcher weighted their ${level} experience (${c.exp}) and skill overlap (${c.skills.slice(0,3).join(', ')}) most heavily.`;
+}
+
+// =================================================================
+// NAVIGATION
+// =================================================================
+const PAGE_TITLES = {
+  dashboard:    { eyebrow:'Overview',    title:'Dashboard' },
+  jobs:         { eyebrow:'Recruitment', title:'Open Jobs' },
+  pipeline:     { eyebrow:'Recruitment', title:'Candidate Pipeline' },
+  process:      { eyebrow:'Operating Model', title:'Process Map' },
+  candidates:   { eyebrow:'Recruitment', title:'All Candidates' },
+  interviews:   { eyebrow:'Recruitment', title:'Interviews' },
+  analytics:    { eyebrow:'Insights',    title:'Analytics' },
+  profile:      { eyebrow:'Account',     title:'My Profile' },
+  integrations: { eyebrow:'Setup',       title:'Integrations' },
+  settings:     { eyebrow:'Setup',       title:'Settings' },
+};
+
+function navTo(page) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const target = document.querySelector(`[data-page="${page}"]`);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('page-title').textContent    = PAGE_TITLES[page].title;
+  document.getElementById('page-eyebrow').textContent  = PAGE_TITLES[page].eyebrow;
+  if (page !== 'candidates') closeCandidateDetail();
+  if (page !== 'interviews') closeInterviewDetail();
+  if (page === 'process')   renderProcessMap();
+  if (page === 'analytics') initAnalytics();
+  if (page === 'profile')   initProfileChart();
+}
+document.querySelectorAll('.nav-item').forEach(el => {
+  el.addEventListener('click', () => { if (el.dataset.page) navTo(el.dataset.page); });
+});
+
+let lastSearchResults = [];
+
+function hideSearchResults() {
+  const panel = document.getElementById('search-results');
+  if (panel) panel.classList.remove('open');
+}
+
+function handleGlobalSearch(value = '') {
+  const panel = document.getElementById('search-results');
+  if (!panel) return;
+
+  const query = value.trim().toLowerCase();
+  if (query.length < 2) {
+    lastSearchResults = [];
+    panel.classList.remove('open');
+    panel.innerHTML = '';
+    return;
+  }
+
+  const candidateMatches = CANDIDATES
+    .filter(c => [c.name, c.role, c.location, c.source, c.skills.join(' ')].join(' ').toLowerCase().includes(query))
+    .slice(0, 5)
+    .map(c => ({
+      type: 'candidate',
+      id: c.id,
+      title: c.name,
+      meta: `${c.role} - ${c.score}% match`,
+      badge: c.source,
+    }));
+
+  const jobMatches = JOBS
+    .filter(j => [j.title, j.dept, j.location, j.status, j.boards.join(' ')].join(' ').toLowerCase().includes(query))
+    .slice(0, 3)
+    .map(j => ({
+      type: 'job',
+      id: j.id,
+      title: j.title,
+      meta: `${j.location} - ${CANDIDATES.filter(c => c.jobId === j.id).length} candidates`,
+      badge: j.status,
+    }));
+
+  lastSearchResults = [...candidateMatches, ...jobMatches].slice(0, 6);
+
+  panel.innerHTML = lastSearchResults.length
+    ? lastSearchResults.map(r => `
+        <button class="search-result" onclick="openSearchResult('${r.type}', '${r.id}')">
+          <span>
+            <span class="search-result-title">${r.title}</span>
+            <span class="search-result-meta block">${r.meta}</span>
+          </span>
+          <span class="search-result-badge">${r.badge}</span>
+        </button>
+      `).join('')
+    : '<div class="p-3 text-sm" style="color:var(--muted)">No matching candidates or jobs</div>';
+  panel.classList.add('open');
+}
+
+function openSearchResult(type, id) {
+  hideSearchResults();
+  const input = document.getElementById('global-search');
+  if (input) input.blur();
+
+  if (type === 'candidate') {
+    openCandidate(id);
+    return;
+  }
+
+  if (type === 'job') {
+    navTo('pipeline');
+    const filter = document.getElementById('pipeline-job-filter');
+    if (filter) filter.value = id;
+    renderKanban();
+  }
+}
+
+function openFirstSearchResult() {
+  if (lastSearchResults.length) {
+    openSearchResult(lastSearchResults[0].type, lastSearchResults[0].id);
+  }
+}
+
+document.addEventListener('click', event => {
+  if (!event.target.closest('.global-search-wrap')) hideSearchResults();
+});
+
+function exportPipeline() {
+  showToast('Pipeline snapshot prepared for presentation', 'OK');
+}
+
+function scheduleInterviewDemo() {
+  showToast('Scheduler opened with the top candidates pre-filled', 'OK');
+}
+
+// =================================================================
+// RENDER: PROCESS MAP
+// =================================================================
+function selectProcessStep(index) {
+  activeProcessStep = Math.max(0, Math.min(PROCESS_STEPS.length - 1, index));
+  renderProcessMap();
+}
+
+function processIcon(name) {
+  const icons = {
+    briefcase:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M2 12h20"/></svg>',
+    broadcast:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.1a10 10 0 0 1 0-14.2"/><path d="M7.8 16.2a6 6 0 0 1 0-8.4"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4"/><path d="M19.1 4.9a10 10 0 0 1 0 14.2"/></svg>',
+    radar:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 12 18 6"/><path d="M12 3v3"/><path d="M3 12h3"/><path d="M12 18v3"/><path d="M18 12h3"/></svg>',
+    spark:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>',
+    userCheck:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/></svg>',
+    video:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7 16 12l7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>',
+    handshake:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a2.8 2.8 0 0 0 4 0l4-4"/><path d="m7 11 3-3 3 3 2-2"/><path d="M2 12l5-5 4 4"/><path d="m18 8 4 4"/><path d="m2 17 5 5"/></svg>',
+    chart:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-7"/></svg>',
+    input:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>',
+    automation:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>',
+    output:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>',
+    control:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-5"/></svg>',
+  };
+  return icons[name] || icons.spark;
+}
+
+function renderProcessMap() {
+  const lane = document.getElementById('process-lane');
+  const detail = document.getElementById('process-detail');
+  if (!lane || !detail) return;
+
+  lane.innerHTML = PROCESS_STEPS.map((step, i) => `
+    <div class="process-node ${i === activeProcessStep ? 'active' : ''}" onclick="selectProcessStep(${i})">
+      <span class="process-index">0${i + 1}</span>
+      <div class="process-icon">${processIcon(step.icon)}</div>
+      <h3 class="font-display text-lg leading-tight" style="color:var(--navy)">${step.title}</h3>
+      <div class="process-metric">${step.metric}</div>
+    </div>
+  `).join('');
+
+  const step = PROCESS_STEPS[activeProcessStep];
+  const page = step.screen.toLowerCase();
+  detail.innerHTML = `
+    <div class="flex items-center justify-between gap-4 mb-3">
+      <div>
+        <div class="text-[11px] uppercase tracking-widest font-bold" style="color:var(--muted)">Selected step</div>
+        <h3 class="font-display text-xl mt-1" style="color:var(--navy)">${step.title}: ${step.signal}</h3>
+      </div>
+      <button class="btn-ghost" onclick="navTo('${page}')">Open ${step.screen}</button>
+    </div>
+    <div class="process-detail-grid">
+      <div class="process-detail-tile">
+        <div class="process-detail-mark">${processIcon('input')}</div>
+        <div>
+          <div class="text-[10px] uppercase tracking-widest font-bold mb-1" style="color:var(--muted)">Input</div>
+          <p class="text-xs leading-relaxed">${step.input}</p>
+        </div>
+      </div>
+      <div class="process-detail-tile">
+        <div class="process-detail-mark">${processIcon('output')}</div>
+        <div>
+          <div class="text-[10px] uppercase tracking-widest font-bold mb-1" style="color:var(--muted)">Output</div>
+          <p class="text-xs leading-relaxed">${step.output}</p>
+        </div>
+      </div>
+      <div class="process-detail-tile">
+        <div class="process-detail-mark">${processIcon('control')}</div>
+        <div>
+          <div class="text-[10px] uppercase tracking-widest font-bold mb-1" style="color:var(--muted)">Control</div>
+          <p class="text-xs leading-relaxed">${step.proof}</p>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// =================================================================
+// RENDER: DASHBOARD TOP MATCHES
+// =================================================================
+function renderTopMatches() {
+  const el = document.getElementById('top-matches-list');
+  const top = [...CANDIDATES].sort((a,b) => b.score - a.score).slice(0, 6);
+  el.innerHTML = top.map(c => `
+    <div class="flex items-center gap-4 py-3 px-3 rounded-xl hover:bg-[var(--bg-alt)] cursor-pointer transition" onclick="openCandidate('${c.id}')">
+      <div class="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0" style="background:${avatarBg(c.name)}">${initials(c.name)}</div>
+      <div class="flex-1 min-w-0">
+        <div class="font-semibold text-sm truncate">${c.name}</div>
+        <div class="text-xs truncate" style="color:var(--muted)">${c.role} · ${c.location}</div>
+      </div>
+      <div class="hidden md:flex items-center text-[11px]" style="color:var(--muted)">
+        <span class="source-dot" style="background:${SOURCE_COLORS[c.source]||'#999'}"></span>${c.source}
+      </div>
+      <div class="score-pill ${scoreClass(c.score)}">${c.score}%</div>
+    </div>
+  `).join('');
+}
+
+// =================================================================
+// RENDER: JOBS
+// =================================================================
+function renderJobs() {
+  const el = document.getElementById('jobs-grid');
+  el.innerHTML = JOBS.map(j => {
+    const jobCands = CANDIDATES.filter(c => c.jobId === j.id);
+    const topMatch = jobCands.length ? Math.max(...jobCands.map(c => c.score)) : 0;
+    return `
+      <div class="card p-6 hover:border-[var(--brand)] transition cursor-pointer" onclick="navTo('pipeline')">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <div class="text-[11px] uppercase tracking-widest font-semibold mb-1" style="color:var(--brand-dark)">${j.dept}</div>
+            <h3 class="font-display text-2xl leading-tight" style="color:var(--navy)">${j.title}</h3>
+            <div class="text-sm mt-1.5" style="color:var(--muted)">📍 ${j.location}</div>
+          </div>
+          <span class="tag ${j.status === 'Draft' ? '' : 'tag-success'}">${j.status}</span>
+        </div>
+        <div class="flex items-center gap-5 pt-4 border-t" style="border-color:var(--border)">
+          <div>
+            <div class="text-[11px] font-semibold uppercase tracking-wider" style="color:var(--muted)">Applicants</div>
+            <div class="font-display text-xl" style="color:var(--navy)">${jobCands.length}</div>
+          </div>
+          <div>
+            <div class="text-[11px] font-semibold uppercase tracking-wider" style="color:var(--muted)">Top match</div>
+            <div class="font-display text-xl" style="color:var(--navy)">${topMatch || '—'}${topMatch?'%':''}</div>
+          </div>
+          <div class="flex-1"></div>
+          <div class="text-xs" style="color:var(--muted)">${j.posted}</div>
+        </div>
+        ${j.boards.length ? `
+        <div class="mt-4 flex items-center gap-2 flex-wrap">
+          <span class="text-[11px] font-semibold uppercase tracking-wider" style="color:var(--muted)">Posted on:</span>
+          ${j.boards.map(b => `<span class="tag tag-brand">${b}</span>`).join('')}
+        </div>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+// =================================================================
+// RENDER: PIPELINE KANBAN
+// =================================================================
+function renderKanban() {
+  const kanban = document.getElementById('kanban');
+  const filter = document.getElementById('pipeline-job-filter').value;
+  const list = filter === 'all' ? CANDIDATES : CANDIDATES.filter(c => c.jobId === filter);
+  kanban.innerHTML = STAGES.map(stage => {
+    const cards = list.filter(c => c.stage === stage.id).sort((a,b) => b.score - a.score);
+    return `
+      <div class="pipeline-col" data-stage="${stage.id}">
+        <div class="px-4 py-3 flex items-center justify-between border-b" style="border-color:var(--border)">
+          <div>
+            <div class="font-display text-base" style="color:var(--navy)">${stage.label}</div>
+            <div class="text-[10px] uppercase tracking-wider" style="color:var(--muted)">${stage.desc}</div>
+          </div>
+          <span class="text-xs font-mono font-semibold px-2 py-0.5 rounded-md" style="background:var(--card);border:1px solid var(--border);color:var(--ink-soft)">${cards.length}</span>
+        </div>
+        <div class="p-3 space-y-2.5 flex-1 kanban-drop-zone" data-stage="${stage.id}">
+          ${cards.map(c => `
+            <div class="cand-card" draggable="true" data-id="${c.id}" onclick="openCandidate('${c.id}')">
+              <div class="flex items-start gap-3">
+                <div class="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0" style="background:${avatarBg(c.name)}">${initials(c.name)}</div>
+                <div class="flex-1 min-w-0">
+                  <div class="font-semibold text-sm truncate">${c.name}</div>
+                  <div class="text-[11px] truncate" style="color:var(--muted)">${c.location} · ${c.exp}</div>
+                </div>
+                <div class="score-pill ${scoreClass(c.score)}">${c.score}</div>
+              </div>
+              <div class="mt-2.5 flex items-center gap-1.5 flex-wrap">
+                ${c.skills.slice(0,3).map(s => `<span class="tag" style="font-size:10px;padding:1px 7px">${s}</span>`).join('')}
+                ${c.skills.length > 3 ? `<span class="text-[10px]" style="color:var(--muted)">+${c.skills.length-3}</span>` : ''}
+              </div>
+              <div class="mt-2 flex items-center gap-1.5 text-[10px]" style="color:var(--muted)">
+                <span class="source-dot" style="background:${SOURCE_COLORS[c.source]||'#999'};width:6px;height:6px"></span>
+                ${c.source}
+              </div>
+            </div>
+          `).join('') || `<div class="text-[11px] text-center py-6" style="color:var(--muted-light)">Drop candidates here</div>`}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Drag and drop
+  document.querySelectorAll('.cand-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      card.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', card.dataset.id);
+      e.stopPropagation();
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+  document.querySelectorAll('.kanban-drop-zone').forEach(zone => {
+    const col = zone.closest('.pipeline-col');
+    zone.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', e => { if (!zone.contains(e.relatedTarget)) col.classList.remove('drag-over'); });
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      col.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('text/plain');
+      const cand = CANDIDATES.find(c => c.id === id);
+      if (cand && cand.stage !== zone.dataset.stage) {
+        cand.stage = zone.dataset.stage;
+        const newStage = stageLabel(cand.stage);
+        renderKanban();
+        renderCandidatesTable();
+        showToast(`${cand.name} moved to ${newStage}`, '✓');
+      }
+    });
+  });
+}
+
+function initPipelineFilter() {
+  const sel = document.getElementById('pipeline-job-filter');
+  sel.innerHTML = `<option value="all">All open jobs</option>` + JOBS.filter(j => j.status==='Published').map(j => `<option value="${j.id}">${j.title}</option>`).join('');
+  sel.addEventListener('change', renderKanban);
+}
+
+// =================================================================
+// RENDER: CANDIDATES TABLE
+// =================================================================
+function renderCandidatesTable() {
+  const body = document.getElementById('candidates-table-body');
+  document.getElementById('cand-count').textContent = CANDIDATES.length;
+  body.innerHTML = [...CANDIDATES].sort((a,b) => b.score - a.score).map(c => `
+    <tr class="border-b hover:bg-[var(--bg-alt)] cursor-pointer transition" style="border-color:var(--border)" onclick="openCandidate('${c.id}')">
+      <td class="px-5 py-4">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0" style="background:${avatarBg(c.name)}">${initials(c.name)}</div>
+          <div>
+            <div class="font-semibold text-sm">${c.name}</div>
+            <div class="text-xs" style="color:var(--muted)">${c.location} · ${c.exp}</div>
+          </div>
+        </div>
+      </td>
+      <td class="px-5 py-4 text-sm">${c.role}</td>
+      <td class="px-5 py-4"><span class="tag">${stageLabel(c.stage)}</span></td>
+      <td class="px-5 py-4 text-sm"><span class="source-dot" style="background:${SOURCE_COLORS[c.source]||'#999'}"></span>${c.source}</td>
+      <td class="px-5 py-4 text-right"><span class="score-pill ${scoreClass(c.score)}">${c.score}%</span></td>
+    </tr>
+  `).join('');
+}
+
+// =================================================================
+// CANDIDATE DETAIL
+// =================================================================
+function openCandidate(id) {
+  const c = CANDIDATES.find(x => x.id === id);
+  if (!c) return;
+  navTo('candidates');
+  document.getElementById('page-title').textContent = c.name;
+  document.getElementById('page-eyebrow').textContent = 'Candidate Profile';
+  document.getElementById('candidate-list-view').style.display = 'none';
+  document.getElementById('candidate-detail-view').style.display = 'block';
+
+  const scoreColor = c.score >= 85 ? 'var(--success)' : c.score >= 70 ? 'var(--warning)' : 'var(--danger)';
+  const scoreLabel = c.score >= 85 ? 'Excellent fit' : c.score >= 70 ? 'Good fit' : 'Moderate fit';
+
+  document.getElementById('candidate-detail-body').innerHTML = `
+    <!-- Header -->
+    <div class="card p-8 mb-6 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-64 h-64" style="background:radial-gradient(circle, var(--brand-soft) 0%, transparent 70%);pointer-events:none"></div>
+      <div class="flex items-start gap-5 relative">
+        <div class="w-20 h-20 rounded-2xl flex items-center justify-center text-white text-2xl font-bold flex-shrink-0" style="background:${avatarBg(c.name)}">${initials(c.name)}</div>
+        <div class="flex-1">
+          <h2 class="font-display text-4xl leading-tight" style="color:var(--navy)">${c.name}</h2>
+          <p class="text-base mt-1" style="color:var(--muted)">${c.role} · ${c.location}</p>
+          <div class="flex items-center gap-4 mt-3 text-sm" style="color:var(--muted)">
+            <span>${c.exp} experience</span>
+            <span>·</span>
+            <span><span class="source-dot" style="background:${SOURCE_COLORS[c.source]||'#999'}"></span>via ${c.source}</span>
+            <span>·</span>
+            <span>${c.email}</span>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-[11px] uppercase tracking-widest font-semibold mb-1" style="color:var(--muted)">AI Match</div>
+          <div class="font-display text-6xl leading-none" style="color:${scoreColor}">${c.score}<span class="text-2xl">%</span></div>
+          <div class="text-[11px] mt-1 font-semibold" style="color:${scoreColor}">${scoreLabel}</div>
+        </div>
+      </div>
+      <div class="mt-5 flex items-center gap-2 pt-5 border-t" style="border-color:var(--border)">
+        <button class="btn-primary">Move to Shortlisted</button>
+        <button class="btn-ghost">Send Test</button>
+        <button class="btn-ghost">Email</button>
+        <div class="flex-1"></div>
+        <button class="btn-ghost" style="color:var(--danger);border-color:var(--danger-soft)">Reject</button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-5 gap-6">
+      <!-- Resume -->
+      <div class="col-span-3 card p-8">
+        <div class="mb-6">
+          <div class="text-[11px] uppercase tracking-widest font-semibold" style="color:var(--brand-dark)">Resume · Parsed by AI</div>
+          <h3 class="font-display text-2xl" style="color:var(--navy)">Profile details</h3>
+        </div>
+
+        <div class="mb-8">
+          <div class="text-[11px] uppercase tracking-widest font-semibold mb-3" style="color:var(--muted)">Experience</div>
+          <div class="space-y-5">
+            <div class="flex gap-4">
+              <div class="w-1 rounded-full" style="background:var(--brand)"></div>
+              <div class="flex-1">
+                <div class="font-semibold">${c.role}</div>
+                <div class="text-sm" style="color:var(--muted)">${c.company || '—'} · ${c.exp}</div>
+                <p class="text-sm mt-2" style="color:var(--ink-soft)">Hands-on ${c.role.toLowerCase()} delivering features end-to-end. Strong ownership mentality and comfortable shipping production code.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-1 rounded-full" style="background:var(--border-strong)"></div>
+              <div class="flex-1">
+                <div class="font-semibold">Previous Role</div>
+                <div class="text-sm" style="color:var(--muted)">Various clients · Earlier career</div>
+                <p class="text-sm mt-2" style="color:var(--ink-soft)">Built web applications and collaborated with cross-functional teams to ship features on time.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-8">
+          <div class="text-[11px] uppercase tracking-widest font-semibold mb-3" style="color:var(--muted)">Skills extracted</div>
+          <div class="flex flex-wrap gap-2">
+            ${c.skills.map(s => `<span class="tag tag-brand">${s}</span>`).join('')}
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <div class="text-[11px] uppercase tracking-widest font-semibold mb-3" style="color:var(--muted)">Contact</div>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <div class="text-xs mb-1" style="color:var(--muted)">Email</div>
+              <div class="font-medium">${c.email}</div>
+            </div>
+            <div>
+              <div class="text-xs mb-1" style="color:var(--muted)">Phone</div>
+              <div class="font-medium">${c.phone || '—'}</div>
+            </div>
+            ${c.github ? `
+            <div>
+              <div class="text-xs mb-1" style="color:var(--muted)">GitHub</div>
+              <div class="font-medium">@${c.github}</div>
+            </div>` : ''}
+            <div>
+              <div class="text-xs mb-1" style="color:var(--muted)">Availability</div>
+              <div class="font-medium" style="color:var(--success)">✓ Available</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Panel -->
+      <div class="col-span-2">
+        <div class="card p-6 mb-4" style="background:linear-gradient(180deg, var(--brand-soft) 0%, var(--card) 60%)">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:var(--brand);color:white">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+            </div>
+            <div>
+              <div class="font-display text-xl leading-tight" style="color:var(--navy)">Why this candidate</div>
+              <div class="text-[11px]" style="color:var(--muted)">AI explanation</div>
+            </div>
+          </div>
+          <p class="text-sm leading-relaxed">${whyBox(c)}</p>
+        </div>
+
+        <div class="card p-6 mb-4">
+          <div class="text-[11px] uppercase tracking-widest font-bold mb-3" style="color:var(--success)">✓ Strengths</div>
+          <div class="space-y-2.5">
+            ${strengthsFor(c).map(s => `
+              <div class="flex gap-3 text-sm">
+                <div class="w-1.5 h-1.5 rounded-full mt-2" style="background:var(--success)"></div>
+                <div class="flex-1">${s}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <div class="text-[11px] uppercase tracking-widest font-bold mb-3" style="color:var(--warning)">△ Gaps to explore</div>
+          <div class="space-y-2.5">
+            ${gapsFor(c).map(s => `
+              <div class="flex gap-3 text-sm">
+                <div class="w-1.5 h-1.5 rounded-full mt-2" style="background:var(--warning)"></div>
+                <div class="flex-1">${s}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function closeCandidateDetail() {
+  const detail = document.getElementById('candidate-detail-view');
+  const list = document.getElementById('candidate-list-view');
+  if (detail) detail.style.display = 'none';
+  if (list) list.style.display = 'block';
+}
+
+// =================================================================
+// RENDER: INTEGRATIONS
+// =================================================================
+function renderIntegrations() {
+  const el = document.getElementById('integrations-grid');
+  el.innerHTML = INTEGRATIONS.map(i => {
+    let btnHtml = '';
+    if (i.status === 'connected')        btnHtml = `<button class="btn-ghost w-full justify-center" style="color:var(--success);border-color:#A7F3D0;background:var(--success-soft)">✓ Connected</button>`;
+    else if (i.status === 'disconnected') btnHtml = `<button class="btn-primary w-full justify-center" onclick="fakeConnect(this,'${i.name}')">Connect</button>`;
+    else                                  btnHtml = `<button class="btn-ghost w-full justify-center" disabled style="color:var(--muted)">Coming soon</button>`;
+    return `
+      <div class="card p-5">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center font-bold text-white text-sm" style="background:${i.color}">${i.icon}</div>
+          <div class="flex-1">
+            <div class="font-semibold text-sm">${i.name}</div>
+          </div>
+        </div>
+        <p class="text-xs mb-4" style="color:var(--muted);min-height:32px">${i.desc}</p>
+        ${btnHtml}
+      </div>
+    `;
+  }).join('');
+}
+function fakeConnect(btn, name) {
+  btn.textContent = 'Connecting…';
+  btn.disabled = true;
+  setTimeout(() => {
+    showToast(`${name} connected successfully`, '✓');
+    const int = INTEGRATIONS.find(x => x.name === name);
+    if (int) int.status = 'connected';
+    renderIntegrations();
+  }, 900);
+}
+
+// =================================================================
+// RENDER: FUNNEL
+// =================================================================
+function renderFunnel() {
+  const el = document.getElementById('funnel-bars');
+  const max = FUNNEL[0].count;
+  el.innerHTML = FUNNEL.map((f, idx) => {
+    const width = (f.count / max) * 100;
+    const colors = ['#0A1F3F','#132B55','#1C3763','#0989C7','#1BAEF0','#10B981'];
+    return `
+      <div class="flex items-center gap-4">
+        <div class="w-28 text-sm font-semibold flex-shrink-0">${f.label}</div>
+        <div class="flex-1 relative h-11">
+          <div class="absolute inset-y-0 left-0 rounded-xl flex items-center justify-end px-4 text-white text-sm font-semibold font-mono" style="width:${width}%;background:${colors[idx]};box-shadow:0 2px 8px rgba(10,31,63,0.12)">${f.count}</div>
+        </div>
+        <div class="w-20 text-right text-sm font-mono font-semibold" style="color:var(--muted)">${f.pct}%</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// =================================================================
+// CHARTS
+// =================================================================
+let chartsInitialized = false;
+function initAnalytics() {
+  renderFunnel();
+  if (chartsInitialized) return;
+  chartsInitialized = true;
+
+  Chart.defaults.font.family = "'Inter', sans-serif";
+  Chart.defaults.color = '#64748B';
+  Chart.defaults.borderColor = '#E2E8F0';
+
+  new Chart(document.getElementById('sourceChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['LinkedIn','Indeed','GitHub','Rozee.pk','Direct'],
+      datasets: [{
+        data: [52, 20, 14, 9, 5],
+        backgroundColor: ['#0A66C2','#003A9B','#0F172A','#E91E63','#1BAEF0'],
+        borderColor: '#FFFFFF',
+        borderWidth: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '68%',
+      plugins: {
+        legend: { position: 'right', labels: { boxWidth: 10, boxHeight: 10, padding: 14, font: { size: 12, weight: '500' } } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('scoreChart'), {
+    type: 'bar',
+    data: {
+      labels: ['0-20','20-40','40-60','60-80','80-100'],
+      datasets: [{
+        data: [4, 18, 62, 128, 72],
+        backgroundColor: ['#FEE2E2','#FEF3C7','#FEF3C7','#D1FAE5','#1BAEF0'],
+        borderRadius: 8,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { weight: '500' } } },
+        y: { grid: { color: '#F1F5F9' }, beginAtZero: true }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('timeChart'), {
+    type: 'line',
+    data: {
+      labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+      datasets: [{
+        label: 'Days to hire',
+        data: [28, 26, 27, 24, 25, 23, 22, 21, 20, 19, 18, 18],
+        borderColor: '#1BAEF0',
+        backgroundColor: 'rgba(27,174,240,0.10)',
+        fill: true,
+        tension: 0.38,
+        pointBackgroundColor: '#1BAEF0',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        borderWidth: 2.5,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { weight: '500' } } },
+        y: { grid: { color: '#F1F5F9' }, beginAtZero: false }
+      }
+    }
+  });
+}
+
+// =================================================================
+// MODAL (Post Job)
+// =================================================================
+let modalStep = 1;
+function openModal() { document.getElementById('modal').classList.add('open'); modalStep = 1; updateModalStep(); }
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+function stepNext() {
+  if (modalStep < 3) { modalStep++; updateModalStep(); }
+  else {
+    closeModal();
+    showToast('Job posted to LinkedIn & Indeed', '✓');
+    setTimeout(() => showToast('AI Sourcing Agent is searching for candidates…', '✨'), 900);
+  }
+}
+function stepBack() { if (modalStep > 1) { modalStep--; updateModalStep(); } }
+function updateModalStep() {
+  [1,2,3].forEach(i => {
+    const dot = document.getElementById('step-' + i);
+    dot.classList.remove('active','done');
+    if (i < modalStep) dot.classList.add('done');
+    if (i === modalStep) dot.classList.add('active');
+    document.getElementById('form-step-' + i).style.display = i === modalStep ? 'block' : 'none';
+  });
+  document.getElementById('btn-back').style.display = modalStep > 1 ? 'inline-flex' : 'none';
+  document.getElementById('btn-next').textContent = modalStep === 3 ? 'Post job ✓' : 'Continue →';
+}
+document.getElementById('modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+
+// =================================================================
+// TOASTS
+// =================================================================
+function showToast(msg, icon) {
+  const container = document.getElementById('toasts');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span style="color:var(--brand);font-size:17px;font-weight:700">${icon||'•'}</span><span>${msg}</span>`;
+  container.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(100%)'; t.style.transition = 'all .35s'; }, 3200);
+  setTimeout(() => t.remove(), 3700);
+}
+
+function runAIMatch() {
+  showToast('Running AI matcher on all candidates…', '✨');
+  setTimeout(() => showToast('Match scores updated · 3 new top matches found', '✓'), 1800);
+}
+
+// =================================================================
+// PRESENTATION DEMO MODE
+// =================================================================
+const DEMO_STEPS = [
+  {
+    page:'dashboard',
+    title:'Start with the command center',
+    copy:'Show that hiresyrAI is not a landing page. It behaves like a CRM: live roles, candidate volume, top matches, and activity feed in one recruiter workspace.',
+    target:'#top-matches-list',
+  },
+  {
+    page:'process',
+    title:'Explain the process before the features',
+    copy:'The process map shows one clean six-step hiring path: brief, source, match, review, interview, hire.',
+    target:'#process-lane',
+    action:() => selectProcessStep(3),
+  },
+  {
+    page:'jobs',
+    title:'Create and publish a role',
+    copy:'Each job carries department, location, posting channels, candidate count, and best-match signal so the audience can see how demand enters the system.',
+    target:'#jobs-grid',
+  },
+  {
+    page:'pipeline',
+    title:'Operate the hiring pipeline',
+    copy:'The kanban view demonstrates actual CRM work: candidates move across stages, AI scores stay visible, and the recruiter still controls the decision.',
+    target:'#kanban',
+  },
+  {
+    page:'candidates',
+    title:'Open the evidence packet',
+    copy:'A candidate profile shows why the score exists, where the profile came from, what skills were extracted, and what gaps need human review.',
+    target:'#candidate-detail-body',
+    action:() => openCandidate('c1'),
+  },
+  {
+    page:'interviews',
+    title:'Show interview intelligence',
+    copy:'Completed interviews include technical and soft-skill scoring, notes, transcript-style evidence, and a recommendation that the panel can challenge.',
+    target:'#interview-detail-body',
+    action:() => openInterview('iv2'),
+  },
+  {
+    page:'analytics',
+    title:'Close with operating metrics',
+    copy:'Analytics prove this is a management system, not only a matcher: funnel conversion, source quality, score distribution, and time-to-hire trends.',
+    target:'#funnel-bars',
+  },
+];
+
+let demoIndex = 0;
+let demoRunning = false;
+let demoStartIndex = 0;
+let demoStartedAt = 0;
+let demoClock = null;
+const DEMO_TOTAL_MS = 30000;
+
+function startDemo(startAt = 0) {
+  demoRunning = true;
+  demoIndex = Math.max(0, Math.min(DEMO_STEPS.length - 1, startAt));
+  demoStartIndex = demoIndex;
+  demoStartedAt = performance.now();
+  document.body.classList.add('demo-running');
+  document.getElementById('demo-panel').style.display = 'block';
+  renderDemoStep();
+  startDemoClock();
+}
+
+function stopDemo() {
+  demoRunning = false;
+  if (demoClock) clearInterval(demoClock);
+  demoClock = null;
+  document.body.classList.remove('demo-running');
+  document.getElementById('demo-panel').style.display = 'none';
+  document.querySelectorAll('.demo-focus').forEach(el => el.classList.remove('demo-focus'));
+}
+
+function startDemoClock() {
+  if (demoClock) clearInterval(demoClock);
+  demoClock = setInterval(() => {
+    if (!demoRunning) return;
+    const stepMs = DEMO_TOTAL_MS / (DEMO_STEPS.length - demoStartIndex);
+    const elapsed = performance.now() - demoStartedAt;
+    const nextIndex = Math.min(DEMO_STEPS.length - 1, demoStartIndex + Math.floor(elapsed / stepMs));
+    if (nextIndex !== demoIndex) {
+      demoIndex = nextIndex;
+      renderDemoStep();
+    }
+    updateDemoProgress(elapsed);
+    if (elapsed >= DEMO_TOTAL_MS) {
+      stopDemo();
+      showToast('30-second demo complete', '✓');
+    }
+  }, 160);
+}
+
+function updateDemoProgress(elapsed = performance.now() - demoStartedAt) {
+  const pct = Math.max(0, Math.min(100, (elapsed / DEMO_TOTAL_MS) * 100));
+  const bar = document.getElementById('demo-progress-bar');
+  if (bar) bar.style.width = `${pct}%`;
+}
+
+function renderDemoStep() {
+  if (!demoRunning) return;
+  const step = DEMO_STEPS[demoIndex];
+  document.querySelectorAll('.demo-focus').forEach(el => el.classList.remove('demo-focus'));
+
+  navTo(step.page);
+  if (typeof step.action === 'function') step.action();
+
+  document.getElementById('demo-step-kicker').textContent = `Demo step ${demoIndex + 1}`;
+  document.getElementById('demo-step-title').textContent = step.title;
+  document.getElementById('demo-step-copy').textContent = step.copy;
+  document.getElementById('demo-step-count').textContent = `${demoIndex + 1} / ${DEMO_STEPS.length}`;
+  document.getElementById('demo-next-btn').textContent = demoIndex === DEMO_STEPS.length - 1 ? 'Finish' : 'Next';
+  updateDemoProgress();
+
+  requestAnimationFrame(() => {
+    const target = document.querySelector(step.target);
+    if (target) {
+      target.classList.add('demo-focus');
+      target.scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+  });
+}
+
+function demoNext() {
+  if (demoIndex >= DEMO_STEPS.length - 1) {
+    stopDemo();
+    showToast('Demo walkthrough complete', '✓');
+    return;
+  }
+  demoIndex++;
+  demoStartIndex = demoIndex;
+  demoStartedAt = performance.now();
+  renderDemoStep();
+}
+
+function demoPrev() {
+  demoIndex = Math.max(0, demoIndex - 1);
+  demoStartIndex = demoIndex;
+  demoStartedAt = performance.now();
+  renderDemoStep();
+}
+
+// =================================================================
+// RENDER: INTERVIEWS LIST
+// =================================================================
+const REC_LABELS = {
+  strong_hire:    { label:'Strong Hire',    color:'var(--success)',  bg:'var(--success-soft)', icon:'✓✓' },
+  hire:           { label:'Hire',           color:'#0989C7',         bg:'var(--brand-soft)',   icon:'✓'  },
+  no_hire:        { label:'No Hire',        color:'var(--warning)',  bg:'var(--warning-soft)', icon:'✗'  },
+  strong_no_hire: { label:'Strong No Hire', color:'var(--danger)',   bg:'var(--danger-soft)',  icon:'✗✗' },
+};
+
+function renderInterviewsList() {
+  const el = document.getElementById('interviews-list');
+  el.innerHTML = INTERVIEWS.map(iv => {
+    const c = CANDIDATES.find(x => x.id === iv.candidateId);
+    if (!c) return '';
+    if (iv.status === 'scheduled') {
+      return `
+        <div class="card p-5 hover:border-[var(--brand)] transition cursor-pointer" onclick="showToast('Interview details coming soon','📅')">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style="background:${avatarBg(c.name)}">${initials(c.name)}</div>
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <div class="font-semibold">${c.name}</div>
+                <span class="tag">${iv.round}</span>
+                <span class="tag tag-brand">SCHEDULED</span>
+              </div>
+              <div class="text-sm mt-1" style="color:var(--muted)">${c.role} · ${iv.date} · ${iv.duration}</div>
+            </div>
+            <div class="text-right">
+              <button class="btn-ghost">Join call</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    const rec = REC_LABELS[iv.recommendation];
+    return `
+      <div class="card p-5 hover:border-[var(--brand)] transition cursor-pointer" onclick="openInterview('${iv.id}')">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style="background:${avatarBg(c.name)}">${initials(c.name)}</div>
+          <div class="flex-1">
+            <div class="flex items-center gap-3">
+              <div class="font-semibold">${c.name}</div>
+              <span class="tag">${iv.round}</span>
+            </div>
+            <div class="text-sm mt-1" style="color:var(--muted)">${c.role} · ${iv.date} · ${iv.duration}</div>
+          </div>
+          <div class="hidden md:flex items-center gap-6 px-4">
+            <div class="text-center">
+              <div class="text-[10px] uppercase tracking-wider font-semibold" style="color:var(--muted)">Tech</div>
+              <div class="font-display text-xl font-mono font-bold" style="color:var(--navy)">${iv.technical}</div>
+            </div>
+            <div class="text-center">
+              <div class="text-[10px] uppercase tracking-wider font-semibold" style="color:var(--muted)">Soft</div>
+              <div class="font-display text-xl font-mono font-bold" style="color:var(--navy)">${iv.soft}</div>
+            </div>
+            <div class="text-center">
+              <div class="text-[10px] uppercase tracking-wider font-semibold" style="color:var(--muted)">Overall</div>
+              <div class="font-display text-xl font-mono font-bold" style="color:var(--brand)">${iv.overall}</div>
+            </div>
+          </div>
+          <div class="px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5" style="background:${rec.bg};color:${rec.color}">
+            <span>${rec.icon}</span>${rec.label}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openInterview(id) {
+  const iv = INTERVIEWS.find(x => x.id === id);
+  if (!iv || iv.status !== 'completed') return;
+  const c = CANDIDATES.find(x => x.id === iv.candidateId);
+  if (!c) return;
+  document.getElementById('interview-list-view').style.display = 'none';
+  document.getElementById('interview-detail-view').style.display = 'block';
+  document.getElementById('page-title').textContent = `${c.name} — Interview`;
+  document.getElementById('page-eyebrow').textContent = 'AI Interview Analysis';
+
+  const rec = REC_LABELS[iv.recommendation];
+  const renderBars = (obj, color) => Object.entries(obj).map(([k,v]) => `
+    <div>
+      <div class="flex justify-between items-baseline mb-1.5">
+        <span class="text-sm font-medium">${k}</span>
+        <span class="text-sm font-mono font-bold" style="color:${color}">${v}</span>
+      </div>
+      <div class="h-2 rounded-full" style="background:var(--bg-alt)">
+        <div class="h-2 rounded-full" style="background:${color};width:${v}%"></div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('interview-detail-body').innerHTML = `
+    <!-- Header -->
+    <div class="card p-8 mb-6 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-96 h-96" style="background:radial-gradient(circle, var(--brand-soft) 0%, transparent 70%);pointer-events:none"></div>
+      <div class="flex items-start gap-5 relative">
+        <div class="w-20 h-20 rounded-2xl flex items-center justify-center text-white text-2xl font-bold flex-shrink-0" style="background:${avatarBg(c.name)}">${initials(c.name)}</div>
+        <div class="flex-1">
+          <div class="flex items-center gap-3">
+            <h2 class="font-display text-3xl leading-tight" style="color:var(--navy)">${c.name}</h2>
+            <span class="px-3 py-1 rounded-lg text-xs font-bold" style="background:${rec.bg};color:${rec.color}">${rec.icon} ${rec.label}</span>
+          </div>
+          <p class="text-base mt-1" style="color:var(--muted)">${c.role} · ${iv.round}</p>
+          <div class="flex items-center gap-4 mt-3 text-sm" style="color:var(--muted)">
+            <span>📅 ${iv.date}</span>
+            <span>⏱️ ${iv.duration}</span>
+            <span>👤 Interviewed by ${iv.interviewer}</span>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-[11px] uppercase tracking-widest font-semibold mb-1" style="color:var(--muted)">Overall AI Score</div>
+          <div class="font-display text-6xl leading-none" style="color:var(--brand)">${iv.overall}<span class="text-2xl">%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Summary -->
+    <div class="card p-6 mb-6" style="background:linear-gradient(180deg, var(--brand-soft) 0%, var(--card) 50%)">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:var(--brand);color:white">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+        </div>
+        <div>
+          <div class="font-display text-xl leading-tight" style="color:var(--navy)">AI Interview Summary</div>
+          <div class="text-[11px]" style="color:var(--muted)">Generated from interview transcript & live observations</div>
+        </div>
+      </div>
+      <p class="text-sm leading-relaxed">${iv.summary}</p>
+    </div>
+
+    <!-- Tech + Soft scores grid -->
+    <div class="grid grid-cols-2 gap-6 mb-6">
+      <!-- Technical -->
+      <div class="card p-6">
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <div class="text-[11px] uppercase tracking-widest font-bold" style="color:var(--brand-dark)">Technical Skills</div>
+            <h3 class="font-display text-2xl" style="color:var(--navy)">AI breakdown</h3>
+          </div>
+          <div class="text-right">
+            <div class="font-display text-4xl" style="color:var(--brand)">${iv.technical}<span class="text-lg" style="color:var(--muted)">%</span></div>
+          </div>
+        </div>
+        <div class="space-y-3 mb-6">
+          ${renderBars(iv.technical_breakdown, 'var(--brand)')}
+        </div>
+        <div class="pt-5 border-t" style="border-color:var(--border)">
+          <div class="text-[11px] uppercase tracking-wider font-bold mb-3" style="color:var(--muted)">AI observations</div>
+          <div class="space-y-2.5">
+            ${iv.technical_notes.map(n => `
+              <div class="flex gap-3 text-sm">
+                <div class="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style="background:var(--brand)"></div>
+                <div class="flex-1" style="color:var(--ink-soft)">${n}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+
+      <!-- Soft skills -->
+      <div class="card p-6">
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <div class="text-[11px] uppercase tracking-widest font-bold" style="color:#0989C7">Soft Skills</div>
+            <h3 class="font-display text-2xl" style="color:var(--navy)">AI breakdown</h3>
+          </div>
+          <div class="text-right">
+            <div class="font-display text-4xl" style="color:var(--success)">${iv.soft}<span class="text-lg" style="color:var(--muted)">%</span></div>
+          </div>
+        </div>
+        <div class="space-y-3 mb-6">
+          ${renderBars(iv.soft_breakdown, 'var(--success)')}
+        </div>
+        <div class="pt-5 border-t" style="border-color:var(--border)">
+          <div class="text-[11px] uppercase tracking-wider font-bold mb-3" style="color:var(--muted)">AI observations</div>
+          <div class="space-y-2.5">
+            ${iv.soft_notes.map(n => `
+              <div class="flex gap-3 text-sm">
+                <div class="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style="background:var(--success)"></div>
+                <div class="flex-1" style="color:var(--ink-soft)">${n}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action bar -->
+    <div class="card p-5 flex items-center gap-3">
+      <div class="flex-1">
+        <div class="text-sm font-semibold">Ready to make a decision?</div>
+        <div class="text-xs" style="color:var(--muted)">AI recommends: <strong style="color:${rec.color}">${rec.label}</strong></div>
+      </div>
+      <button class="btn-ghost">Schedule next round</button>
+      <button class="btn-ghost">Send rejection</button>
+      <button class="btn-primary">Move to Offer →</button>
+    </div>
+  `;
+}
+
+function closeInterviewDetail() {
+  const list = document.getElementById('interview-list-view');
+  const detail = document.getElementById('interview-detail-view');
+  if (list)   list.style.display = 'block';
+  if (detail) detail.style.display = 'none';
+}
+
+// =================================================================
+// PROFILE CHART
+// =================================================================
+let profileChartInited = false;
+function initProfileChart() {
+  if (profileChartInited) return;
+  profileChartInited = true;
+  Chart.defaults.font.family = "'Inter', sans-serif";
+  Chart.defaults.color = '#64748B';
+  new Chart(document.getElementById('profileChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Nov','Dec','Jan','Feb','Mar','Apr'],
+      datasets: [
+        {
+          label: 'Sakha',
+          data: [2, 1, 3, 2, 2, 4],
+          backgroundColor: '#1BAEF0',
+          borderRadius: 6,
+          barPercentage: 0.6,
+        },
+        {
+          label: 'Team avg',
+          data: [1.5, 1.2, 1.8, 1.5, 1.7, 2.1],
+          backgroundColor: '#CBD5E1',
+          borderRadius: 6,
+          barPercentage: 0.6,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', align: 'end', labels: { boxWidth: 10, boxHeight: 10, padding: 14, font: { size: 12, weight: '500' } } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { weight: '500' } } },
+        y: { grid: { color: '#F1F5F9' }, beginAtZero: true, ticks: { stepSize: 1 } }
+      }
+    }
+  });
+}
+
+// =================================================================
+// INIT
+// =================================================================
+renderTopMatches();
+renderJobs();
+initPipelineFilter();
+renderKanban();
+renderProcessMap();
+renderCandidatesTable();
+renderInterviewsList();
+renderIntegrations();
+</script>
+</body>
+</html>
